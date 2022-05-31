@@ -1,0 +1,8 @@
+{
+    "name" : "azurecommonmetrics-indexer",
+    "dataSourceName" : "azurecommonmetricstable",
+    "targetIndexName" : "azurecommonmetrics-index",
+    "schedule" : { 
+        "interval" : "PT5M"
+        }
+}

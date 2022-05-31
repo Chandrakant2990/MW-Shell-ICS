@@ -1,0 +1,8 @@
+{
+    "name" : "splibrarymetrics-indexer",
+    "dataSourceName" : "splibrarymetricstable",
+    "targetIndexName" : "splibrarymetrics-index",
+    "schedule" : { 
+        "interval" : "PT5M"
+        }
+}

@@ -1,0 +1,8 @@
+{
+    "name" : "documenttrackingtable-indexer",
+    "dataSourceName" : "documenttrackingtable",
+    "targetIndexName" : "documenttrackingtable-index",
+    "schedule" : { 
+        "interval" : "PT5M"
+        }
+}

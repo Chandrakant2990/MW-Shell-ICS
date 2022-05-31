@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "Sample3";
+    ViewData["Message"] = "Latest biggest files in your Document Libraries (over 1 MB) !";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <h1 style="color: darkolivegreen;">
+        @ViewData["Title"] - @ViewData["Message"]
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-body">
+            <table id="sample3Table" class="table table-bordered table-striped dataTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Modification DateTime</th>
+                        <th>Size</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="box-footer">
+            <p style="font-style:italic">Powered by SPOCPI !</p>
+        </div>
+    </div>
+</section>
+@section scripts {
+    <script type="text/javascript">
+        var queryText = "";
+
+        $(document).ready(function () {
+
+            var table = $('#sample3Table').DataTable({
+                ajax: {
+                    "url": "http://localhost:7071/api/Sample3",
+                    "dataSrc": ""
+                },
+                columns: [
+                    { data: "id" },
+                    { data: "name" },
+                    {
+                        data: "lastModifiedDateTime",
+                        render: function (data, type, row) {
+                            if (data) {
+                                return moment(data).format("MM-DD-YYYY HH:mm:ss");
+                            }
+                            else
+                                return "";
+                        }
+                    },
+                    { data: "size"},
+                    {
+                        "orderable": false,
+                        "render": function (data, type, row, meta) {
+                            let colContent = "<div>";
+                            colContent += "<button title='Action 1' type='button' class='btn btn-info btn-sm fa fa-bookmark' style='margin-right:5px;'></button>";
+                            colContent += "<button title='Action 2' type='button' class='btn btn-dark btn-sm fa fa-barcode' style='margin-right:5px;'></button>";
+                            colContent += "<button title='Action 3' type='button' class='btn btn-danger btn-sm fa fa-bell' style='margin-right:5px;'></button>";
+                            colContent += "</div>";
+                            return colContent;
+                        }
+                    }
+                    /*and so on, keep adding data elements here for all your columns.*/
+                ]
+            });
+        });
+
+    </script>
+}

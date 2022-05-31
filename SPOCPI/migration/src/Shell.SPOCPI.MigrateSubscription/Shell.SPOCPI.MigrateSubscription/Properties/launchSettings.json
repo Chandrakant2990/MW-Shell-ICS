@@ -1,0 +1,17 @@
+{
+	"profiles": {
+		"Shell.SPOCPI.MigrateSubscription": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"tenantName": "[[Tenant Name]]",
+				"aadClientId": "[[AAD App Client Id]]",
+				"aadClientSecret": "[[AAD App Client Secret]]",
+				"ConnectionStrings:ConfigurationConnectionString": "[[Source WebHooks Storage Account Connection String]]",
+				"notificationUrl": "[[Destination Notification Url]]",
+				"destinationWebHooksConnectionString": "[[Destination WebHooks Storage Account Connection String]]",
+				"ConnectionStrings:RedisConnectionString": "[[Destination Redis Cache Connection String]]",
+				"IsRedisCacheEnabled": "true"
+			}
+		}
+	}
+}

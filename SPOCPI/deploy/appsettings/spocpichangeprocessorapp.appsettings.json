@@ -1,0 +1,102 @@
+[
+    {
+        "name":  "APPINSIGHTS_INSTRUMENTATIONKEY",
+        "slotSetting":  false,
+        "value":  "f477b1d5-c847-442a-a5df-97578ae042e3"
+    },
+    {
+        "name":  "ASPNETCORE_ENVIRONMENT",
+        "slotSetting":  false,
+        "value":  "development"
+    },
+    {
+        "name":  "CPCustomMinuteSchedule",
+        "slotSetting":  false,
+        "value":  "00:03:00"
+    },
+    {
+        "name":  "CPInputQueueName",
+        "slotSetting":  false,
+        "value":  "webhooksnotificationqueue"
+    },
+    {
+        "name":  "CPMaxQueueItemsToPush",
+        "slotSetting":  false,
+        "value":  "50"
+    },
+    {
+        "name":  "CPOutputQueueName",
+        "slotSetting":  false,
+        "value":  "changeprocessoutputqueue"
+    },
+    {
+        "name":  "CPPageProcessingDelay",
+        "slotSetting":  false,
+        "value":  "30000"
+    },
+    {
+        "name":  "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL",
+        "slotSetting":  false,
+        "value":  ""
+    },
+    {
+        "name":  "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS",
+        "slotSetting":  false,
+        "value":  "30"
+    },
+    {
+        "name":  "IsRedisCacheEnabled",
+        "slotSetting":  false,
+        "value":  "true"
+    },
+    {
+        "name":  "MobileAppsManagement_EXTENSION_VERSION",
+        "slotSetting":  false,
+        "value":  "latest"
+    },
+    {
+        "name":  "SCM_COMMAND_IDLE_TIMEOUT",
+        "slotSetting":  false,
+        "value":  "600"
+    },
+    {
+        "name":  "WEBJOBS_IDLE_TIMEOUT",
+        "slotSetting":  false,
+        "value":  "600"
+    },
+    {
+        "name":  "WEBSITE_HTTPLOGGING_CONTAINER_URL",
+        "slotSetting":  false,
+        "value":  ""
+    },
+    {
+        "name":  "WEBSITE_HTTPLOGGING_RETENTION_DAYS",
+        "slotSetting":  false,
+        "value":  "30"
+    },
+    {
+        "name":  "WEBSITE_LOAD_CERTIFICATES",
+        "slotSetting":  false,
+        "value":  "*"
+    },
+    {
+        "name":  "WEBSITE_NODE_DEFAULT_VERSION",
+        "slotSetting":  false,
+        "value":  "10.14.1"
+    },
+    {
+        "name":  "ConnectionStrings:ConfigurationConnectionString",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/WebHooksStoreConnectionString/)"
+    },
+    {
+        "name":  "ConnectionStrings:RedisConnectionString",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/RedisConnectionString/)"
+    },
+    {
+        "name":  "CPServiceBusConnectionString",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/ServiceBusConnectionString/)"
+    }
+]

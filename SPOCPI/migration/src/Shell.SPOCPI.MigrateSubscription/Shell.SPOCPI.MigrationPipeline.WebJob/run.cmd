@@ -1,0 +1,1 @@
+dotnet Shell.SDU.BatchLocations.WebJob.dll

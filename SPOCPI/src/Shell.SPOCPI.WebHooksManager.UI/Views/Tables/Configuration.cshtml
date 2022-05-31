@@ -1,0 +1,63 @@
+﻿<!--
+// -----------------------------------------------------------------------
+// <copyright file="Configuration.cshtml" company="Microsoft Corporation">
+    // Copyright (c) Microsoft Corporation
+    // All rights reserved.
+    // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+    // KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    // IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+    // PARTICULAR PURPOSE.
+    //
+</copyright>
+//-----------------------------------------------------------------------
+-->
+
+@{
+    ViewData["Title"] = "Configuration";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+<section class="content-header">
+    <h1>
+        @ViewData["Title"]
+        <small>@ViewData["Message"]</small>
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">List of drive items</h3>
+        </div>
+        <div class="box-body">
+            @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                <input type="hidden" id="isAdmin" value="true">
+            }
+            <table id="trackingTable" summary="Configuration Table" class="table table-bordered table-striped dataTable" width="100%">
+                <thead>
+                    <tr>
+                        <th scope="col">Partition Key</th>
+                        <th scope="col">Row Key</th>
+                        <th scope="col">Config Key</th>
+                        <th scope="col">Config Value</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <partial name="_ModalsPartial" />
+</section>
+@section scripts {
+    <script type="text/javascript" src="~/js/configuration.js">
+    </script>
+}

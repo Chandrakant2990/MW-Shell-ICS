@@ -1,0 +1,8 @@
+{
+    "name" : "subscriptions-indexer",
+    "dataSourceName" : "subscriptionstable",
+    "targetIndexName" : "subscriptionstable-index",
+    "schedule" : { 
+        "interval" : "PT5M"
+        }
+}

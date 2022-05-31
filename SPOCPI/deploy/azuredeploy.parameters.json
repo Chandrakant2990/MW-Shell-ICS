@@ -1,0 +1,162 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"resourceGroupName": {
+			"value": "PTSPOCPIDev"
+		},
+		"subscriptionId": {
+			"value": "e308ee26-4498-4627-9e94-e225157614ca"
+		},
+		"environment": {
+			"value": "ptdev"
+		},
+		"azureTenantId": {
+			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"tenantName": {
+			"value": "microsoft.onmicrosoft.com"
+		},
+		"AADAppClientId": {
+			"value": ""
+		},
+		"AADAppClientSecret": {
+			"value": ""
+		},
+		"AADLoginAppClientId": {
+			"value": ""
+		},
+		"AADLoginAppClientSecret": {
+			"value": ""
+		},
+		"storageaccountsku": {
+			"value": "Standard"
+		},
+		"servicebussku": {
+			"value": "Standard"
+		},
+		"appservicesku": {
+			"value": "Standard"
+		},
+		"highconsumptionappservicesku": {
+			"value": "Standard"
+		},
+		"appserviceworkerSize": {
+			"value": "2"
+		},
+		"highconsumptionappserviceworkerSize": {
+			"value": "2"
+		},
+		"appserviceskuCode": {
+			"value": "S1"
+		},
+		"highconsumptionappserviceskuCode": {
+			"value": "S1"
+		},
+		"ASPNETCORE_ENVIRONMENT": {
+			"value": "development"
+		},
+		"redisCacheName": {
+			"value": "spocpiredis"
+		},
+		"redisCacheSKU": {
+			"value": "Standard"
+		},
+		"redisCacheFamily": {
+			"value": "C"
+		},
+		"redisCacheCapacity": {
+			"value": 1
+		},
+		"docTrackStorage": {
+			"value": "spocpidoctracksa"
+		},
+		"webHooksStorage": {
+			"value": "spocpiwebhookssa"
+		},
+		"webHooksStorageTableNames": {
+			"value": [
+				"Configuration",
+				"Subscriptions"				
+			]
+		},
+		"docTrackStorageTableNames": {
+			"value": [
+				"DocumentTracking",
+				"DrivesDelta",
+				"DrivesDeltaTransaction",	
+				"NotificationStorage"
+			]
+		},
+		"analyticsStorage": {
+			"value": "spocpianalytics"
+		},
+		"analyticsStorageTableNames": {
+			"value": [
+				"AzureCommonMetrics",
+				"AzureLibraryMetrics",
+				"SharePointLibraryMetrics"				
+			]
+		},
+		"storageAccountType": {
+			"value": "Standard_ZRS"
+		},
+		"appInsightName": {
+			"value": "spocpiappinsight"
+		},
+		"appInsightType": {
+			"value": "web"
+		},
+		"changeprocessorFunctionApp": {
+			"value": "spocpichangeprocessorfunc"
+		},
+		"changeprocessorWebApp": {
+			"value": "spocpichangeprocessorapp"
+		},
+		"notificationReceiverFunctionApp": {
+			"value": "spocpinotificationreceiverfunc"
+		},
+		"populateTrackingFunctionApp": {
+			"value": "spocpipopulatetrackingfunc"
+		},
+		"webHooksManagerWebApp": {
+			"value": "spocpiwebhooksapp"
+		},
+		"serviceBusNamespaceName": {
+			"value": "spocpisvcbus"
+		},
+		"changeprocessoutputqueue": {
+			"value": "changeprocessoutputqueue"
+		},
+		"subscriptionqueue": {
+			"value": "subscriptionqueue"
+		},
+		"webhooksnotificationqueue": {
+			"value": "webhooksnotificationqueue"
+		},
+		"doctrackqueue": {
+			"value": "doctrackqueue"
+		},
+		"searchName": {
+			"value": "spocpisearch"
+		},
+		"searchSku": {
+			"value": "standard"
+		},
+		"searchReplicaCount": {
+			"value": 1
+		},
+		"searchPartitionCount": {
+			"value": 1
+		},
+		"location": {
+			"value": "westeurope"
+		},
+		"keyVaultName": {
+			"value": "spocpikv"
+		},
+		"keyVaultSkuName": {
+			"value": "Standard"
+		}
+	}
+}

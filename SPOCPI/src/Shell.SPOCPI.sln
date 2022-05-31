@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.NotificationReceiver.FunctionApp", "Shell.SPOCPI.NotificationReceiver.FunctionApp\Shell.SPOCPI.NotificationReceiver.FunctionApp.csproj", "{151A3EB8-2CCC-4B5F-A7CD-3826FB7FF116}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.ChangeProcessor.FunctionApp", "Shell.SPOCPI.ChangeProcessor.FunctionApp\Shell.SPOCPI.ChangeProcessor.FunctionApp.csproj", "{21A83AF1-32CD-4736-8611-215ECE6B74F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.ChangeProcessor.WebJob", "Shell.SPOCPI.ChangeProcessor.WebJob\Shell.SPOCPI.ChangeProcessor.WebJob.csproj", "{45469CE6-C2DC-4B95-89CD-D279BE0D325B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.WebHooksManager.UI", "Shell.SPOCPI.WebHooksManager.UI\Shell.SPOCPI.WebHooksManager.UI.csproj", "{8A99279C-6AAE-4AC8-8C65-9F971E880420}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.Common", "Shell.SPOCPI.Common\Shell.SPOCPI.Common.csproj", "{C264EA8B-08EC-49CE-9826-D0FE1E53B5B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.PopulateTracking.FunctionApp", "Shell.SPOCPI.PopulateTracking.FunctionApp\Shell.SPOCPI.PopulateTracking.FunctionApp.csproj", "{DDB176C1-F005-4094-BAF6-ED09A16C065E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.SPOCPI.WebHooksManager.WebJob", "Shell.SPOCPI.WebHooksManager.WebJob\Shell.SPOCPI.WebHooksManager.WebJob.csproj", "{C123DCDA-32E4-412A-B0F9-BDC088939EAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{77151D48-EFC6-4C0C-BBF7-C1FF1854FDB9}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\FxCop.ruleset = Shared\FxCop.ruleset
+		Shared\Settings.StyleCop = Shared\Settings.StyleCop
+		Shared\stylecop.json = Shared\stylecop.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell.SPOCPI.RefreshDeltaToken.WebJob", "Shell.SPOCPI.RefreshDeltaToken.WebJob\Shell.SPOCPI.RefreshDeltaToken.WebJob.csproj", "{431B7CAA-5432-41B8-82B0-993E11E0BEF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{151A3EB8-2CCC-4B5F-A7CD-3826FB7FF116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{151A3EB8-2CCC-4B5F-A7CD-3826FB7FF116}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{151A3EB8-2CCC-4B5F-A7CD-3826FB7FF116}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{151A3EB8-2CCC-4B5F-A7CD-3826FB7FF116}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21A83AF1-32CD-4736-8611-215ECE6B74F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21A83AF1-32CD-4736-8611-215ECE6B74F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21A83AF1-32CD-4736-8611-215ECE6B74F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21A83AF1-32CD-4736-8611-215ECE6B74F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45469CE6-C2DC-4B95-89CD-D279BE0D325B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45469CE6-C2DC-4B95-89CD-D279BE0D325B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45469CE6-C2DC-4B95-89CD-D279BE0D325B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45469CE6-C2DC-4B95-89CD-D279BE0D325B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A99279C-6AAE-4AC8-8C65-9F971E880420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A99279C-6AAE-4AC8-8C65-9F971E880420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A99279C-6AAE-4AC8-8C65-9F971E880420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A99279C-6AAE-4AC8-8C65-9F971E880420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C264EA8B-08EC-49CE-9826-D0FE1E53B5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C264EA8B-08EC-49CE-9826-D0FE1E53B5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C264EA8B-08EC-49CE-9826-D0FE1E53B5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C264EA8B-08EC-49CE-9826-D0FE1E53B5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDB176C1-F005-4094-BAF6-ED09A16C065E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB176C1-F005-4094-BAF6-ED09A16C065E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB176C1-F005-4094-BAF6-ED09A16C065E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB176C1-F005-4094-BAF6-ED09A16C065E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C123DCDA-32E4-412A-B0F9-BDC088939EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C123DCDA-32E4-412A-B0F9-BDC088939EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C123DCDA-32E4-412A-B0F9-BDC088939EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C123DCDA-32E4-412A-B0F9-BDC088939EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431B7CAA-5432-41B8-82B0-993E11E0BEF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431B7CAA-5432-41B8-82B0-993E11E0BEF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431B7CAA-5432-41B8-82B0-993E11E0BEF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431B7CAA-5432-41B8-82B0-993E11E0BEF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72A86A8C-8E27-4287-AF8B-FA674B035D84}
+	EndGlobalSection
+EndGlobal

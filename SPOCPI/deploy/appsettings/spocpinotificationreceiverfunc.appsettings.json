@@ -1,0 +1,67 @@
+[
+    {
+        "name":  "APPINSIGHTS_INSTRUMENTATIONKEY",
+        "slotSetting":  false,
+        "value":  "f477b1d5-c847-442a-a5df-97578ae042e3"
+    },
+    {
+        "name":  "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL",
+        "slotSetting":  false,
+        "value":  ""
+    },
+    {
+        "name":  "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS",
+        "slotSetting":  false,
+        "value":  "30"
+    },
+    {
+        "name":  "FUNCTIONS_EXTENSION_VERSION",
+        "slotSetting":  false,
+        "value":  "~3"
+    },
+    {
+        "name":  "FUNCTIONS_WORKER_RUNTIME",
+        "slotSetting":  false,
+        "value":  "dotnet"
+    },
+    {
+        "name":  "IsRedisCacheEnabled",
+        "slotSetting":  false,
+        "value":  "true"
+    },
+    {
+        "name":  "WEBSITE_HTTPLOGGING_CONTAINER_URL",
+        "slotSetting":  false,
+        "value":  ""
+    },
+    {
+        "name":  "WEBSITE_HTTPLOGGING_RETENTION_DAYS",
+        "slotSetting":  false,
+        "value":  "30"
+    },
+    {
+        "name":  "WEBSITE_NODE_DEFAULT_VERSION",
+        "slotSetting":  false,
+        "value":  "10.14.1"
+    },
+    {
+        "name":  "AzureWebJobsStorage",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/DocTrackStoreConnectionString/)"
+    },
+    {
+        "name":  "ConnectionStrings:ConfigurationConnectionString",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/WebHooksStoreConnectionString/)"
+    },
+    {
+        "name":  "ConnectionStrings:RedisConnectionString",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/RedisConnectionString/)"
+    },
+    {
+        "name":  "ServiceBusConnection",
+        "slotSetting":  false,
+        "value":  "@Microsoft.KeyVault(SecretUri=https://spocpiv1spocpikeyvault.vault.azure.net/secrets/ServiceBusConnectionString/)"
+    }
+]

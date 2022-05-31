@@ -1,0 +1,10 @@
+{   
+    "name" : "azurelibrarymetricstable.",
+    "type" : "azuretable",
+    "credentials" : { 
+        "connectionString" : "[STORAGECONNECTION]" 
+    },  
+    "container" : { 
+        "name" : "AzureLibraryMetrics" 
+    }
+}

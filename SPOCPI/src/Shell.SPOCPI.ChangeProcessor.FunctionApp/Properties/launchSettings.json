@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Shell.SPOCPI.ChangeProcessor.FunctionApp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "IsRedisCacheEnabled": "true",
+        "ConnectionStrings:ConfigurationConnectionString": "[[Replace this with SPOCPI's WebHooks Storage Connection String]]",
+        "ConnectionStrings:RedisConnectionString": "[[Replace this with SPOCPI's Redis Cache Connection String]]",
+        "CPServiceBusConnectionString": "[[Replace this with SPOCPI's Service Bus Root Manage Shared Access Key]]",
+        "AzureWebJobsStorage": "[[Replace this with SPOCPI's Doc Trac Storage Connection String]]"
+      }
+    }
+  }
+}

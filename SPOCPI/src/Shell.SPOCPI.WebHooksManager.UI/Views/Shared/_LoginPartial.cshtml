@@ -1,0 +1,61 @@
+﻿@using System.IO
+@using Shell.SPOCPI.Common
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Http
+@if (User.Identity.IsAuthenticated)
+{
+	string upn = ((System.Security.Claims.ClaimsIdentity)User.Identity).Name;
+	ViewData["DisplayName"] = User.FindFirst("name")?.Value;
+	ViewData["EmailId"] = upn;
+	/*
+	var aadTenantName = ConfigHelper.StringReader("AzureAd:Domain", default(string));
+	var aadClientId = ConfigHelper.StringReader("AzureAd:ClientId", default(string));
+	var aadClientSecret = ConfigHelper.StringReader("AzureAd:ClientSecret", default(string));
+	var graphClient = GraphHelper.GetGraphClient(aadTenantName, aadClientId, aadClientSecret);
+
+	Stream photo = graphClient.Users[upn].Photo.Content.Request().GetAsync().Result;
+	if (photo != null)
+	{
+		MemoryStream ms = new MemoryStream();
+		photo.CopyTo(ms);
+		byte[] buffer = ms.ToArray();
+		string result = Convert.ToBase64String(buffer);
+		string imgDataURL = string.Format("data:image/png;base64,{0}", result);
+		ViewBag.ImageData = imgDataURL;
+		//this.Context.Session.SetString("UserPhoto", (string)ViewBag.ImageData);
+	}
+	else
+	{
+		ViewBag.ImageData = "";
+	}
+	*/
+	<li class="dropdown user user-menu">
+	 <!-- Menu Toggle Button -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	  <!-- The user image in the navbar-->
+		 <img src="~/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+	  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+		<span class="hidden-xs">@ViewData["DisplayName"]</span>
+	 </a>
+	 <ul class="dropdown-menu">
+	  <!-- The user image in the menu -->
+		<li class="user-header">
+	   <img src="~/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+	   <p>
+					@ViewData["DisplayName"]
+		<small>@ViewData["EmailId"] </small>
+	   </p>
+	  </li>
+	  <!-- Menu Footer-->
+		<li class="user-footer">
+	   <div class="pull-right">
+		<a asp-area="AzureAD" asp-controller="Account" asp-action="SignOut" class="btn btn-default btn-flat">Sign out</a>
+	   </div>
+	  </li>
+	 </ul>
+	</li>
+}
+else
+{
+	<li><a asp-area="AzureAD" asp-controller="Account" asp-action="SignIn">Sign in</a></li>
+}

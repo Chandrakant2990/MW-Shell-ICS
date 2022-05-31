@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "WebHooksManager.WebJob": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "WebHooksCustomMinuteSchedule": "00:01:00",
+        "ASPNETCORE_ENVIRONMENT": "development",
+        "IsRedisCacheEnabled": "true",
+        "ConnectionStrings:ConfigurationConnectionString": "[[Replace with Configuration Connection String]]",
+        "ConnectionStrings:RedisConnectionString": "[[Replace with Redis Connection String]]",
+        "ConfigurationConnectionString": "[[Replace with Configuration Connection String]]",
+        "WebHooksStoreConnectionString": "[[Replace with Webhooks Store Connection String]]"
+      }
+    }
+  }
+}

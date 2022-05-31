@@ -1,0 +1,20 @@
+{
+	"profiles": {
+		"ChangeProcessor.WebJob": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"CPCustomMinuteSchedule": "00:03:00",
+				"ASPNETCORE_ENVIRONMENT": "dev",
+				"IsRedisCacheEnabled": "true",
+				"ConnectionStrings:ConfigurationConnectionString": "[[Replace this with SPOCPI's WebHooks Storage Connection String]]",
+				"ConnectionStrings:RedisConnectionString": "[[Replace this with SPOCPI's Redis Cache Connection String]]",
+				"CPServiceBusConnectionString": "[[Replace this with SPOCPI's Service Bus Root Manage Shared Access Key]]",
+				"CPInputQueueName": "webhooksnotificationqueue",
+				"CPOutputQueueName": "changeprocessoutputqueue",
+				"CPMaxQueueItemsToPush": "50",
+				"CPPageProcessingDelay": "60000",
+				"QueryFields": "content.downloadUrl,id,name,deleted,createdDateTime,lastModifiedDateTime,webUrl,cTag,eTag,size,parentReference,file,folder,sharepointIds,location"
+			}
+		}
+	}
+}                   

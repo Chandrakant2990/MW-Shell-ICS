@@ -1,0 +1,7 @@
+﻿AppName,Type,SourceFile,JobName
+spocpichangeprocessorfunc,FunctionApp,Shell.SPOCPI.ChangeProcessor.FunctionApp.zip,
+spocpichangeprocessorapp,WebJob,Shell.SPOCPI.ChangeProcessor.WebJob.zip,ChangeProcessorWebJob
+spocpinotificationreceiverfunc,FunctionApp,Shell.SPOCPI.NotificationReceiver.FunctionApp.zip,
+spocpipopulatetrackingfunc,FunctionApp,Shell.SPOCPI.PopulateTracking.FunctionApp.zip,
+spocpiwebhooksapp,WebApp,Shell.SPOCPI.WebHooksManager.UI.zip,
+spocpiwebhooksapp,WebJob,Shell.SPOCPI.WebHooksManager.WebJob.zip,WebHooksManagerWebJob

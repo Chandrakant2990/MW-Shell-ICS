@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Shell.SPOCPI.NotificationReceiver.FunctionApp</name>
+    </assembly>
+    <members>
+        <member name="T:Shell.SPOCPI.NotificationReceiver.FunctionApp.NotificationReceiver">
+            <summary>
+            The NotificationReceiver Class to receive the notifications and push it into a queue.
+            </summary>
+        </member>
+        <member name="F:Shell.SPOCPI.NotificationReceiver.FunctionApp.NotificationReceiver.LoggerComponent">
+            <summary>
+            The logger component.
+            </summary>
+        </member>
+        <member name="M:Shell.SPOCPI.NotificationReceiver.FunctionApp.NotificationReceiver.Run(Microsoft.AspNetCore.Http.HttpRequest,Microsoft.Azure.WebJobs.ICollector{Microsoft.Azure.ServiceBus.Message},Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Receives the notification and enqueue it.
+            </summary>
+            <param name="req">The request.</param>
+            <param name="incomingNotification">The incoming notification.</param>
+            <param name="log">The Out of the Box logger.</param>
+            <returns>Task Status.</returns>
+        </member>
+        <member name="T:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.DocumentUpdateNotification">
+            <summary>
+              Looks up a localized string similar to Received notifications for document change/upload.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.Exception">
+            <summary>
+              Looks up a localized string similar to Exception in NotificationReceiver FunctionApp..
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.MessageCreated">
+            <summary>
+              Looks up a localized string similar to Message {0} created.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.RequestProcessed">
+            <summary>
+              Looks up a localized string similar to C# HTTP trigger function processed a request..
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.NotificationReceiver.FunctionApp.Resource.ValidationTokenReceived">
+            <summary>
+              Looks up a localized string similar to Validation token {0} received.
+            </summary>
+        </member>
+    </members>
+</doc>

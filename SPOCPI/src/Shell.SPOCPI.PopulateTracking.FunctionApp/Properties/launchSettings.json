@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Shell.SPOCPI.PopulateTracking.FunctionApp": {
+      "commandName": "Project",
+			"environmentVariables": {
+				"DocTrackConnectionString": "[[Replace this with SPOCPI's DocTrac Storage Connection String]]",
+				"ASPNETCORE_ENVIRONMENT": "development",
+				"IsRedisCacheEnabled": "true",
+				"AzureWebJobsStorage": "[[Replace this with SPOCPI's WebHooks Storage Connection String]]",
+				"ConnectionStrings:ConfigurationConnectionString": "[[Replace this with SPOCPI's WebHooks Storage Connection String]]",
+				"ConnectionStrings:RedisConnectionString": "[[Replace this with SPOCPI's Redis Cache Connection String]]",
+				"CPServiceBusConnectionString": "[[Replace this with SPOCPI's Service Bus Root Manage Shared Access Key]]"
+			}
+    }
+  }
+}

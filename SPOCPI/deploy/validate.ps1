@@ -1,0 +1,1 @@
+az group deployment validate --resource-group "SPOCPI_V1" --mode "Complete" --template-file "azuredeploy.json" --parameters "azuredeploy.parameters.json"

@@ -1,0 +1,1 @@
+dotnet Shell.SPOCPI.WebHooksManager.WebJob.dll

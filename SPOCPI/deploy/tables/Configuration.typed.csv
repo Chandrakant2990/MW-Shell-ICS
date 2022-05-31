@@ -1,0 +1,20 @@
+ConfigKey,ConfigKey@type,ConfigValue,ConfigValue@type,PartitionKey,RowKey,Timestamp
+CPDriveDeltaTableName,Edm.String,DrivesDelta,Edm.String,SPOCPI,CPDriveDeltaTableName,2020-01-28T20:08:13.352Z
+CPInputQueueName,Edm.String,webhooksnotificationqueue,Edm.String,SPOCPI,CPInputQueueName,2020-01-28T20:08:23.206Z
+CPMaxRetryAttempts,Edm.String,3,Edm.String,SPOCPI,CPMaxRetryAttempts,2020-01-28T20:08:32.562Z
+CPNotificationFetchCount,Edm.String,50,Edm.String,SPOCPI,CPNotificationFetchCount,2020-01-28T20:08:37.368Z
+CPOutputQueueName,Edm.String,changeprocessoutputqueue,Edm.String,SPOCPI,CPOutputQueueName,2020-01-28T20:08:28.059Z
+CPQueryFields,Edm.String,"content.downloadUrl,id,name,deleted,createdDateTime,lastModifiedDateTime,webUrl,cTag,eTag,size,parentReference,file,folder,sharepointIds,location",Edm.String,SPOCPI,CPQueryFields,2020-01-28T20:08:41.839Z
+DocumentTrackingTableName,Edm.String,DocumentTracking,Edm.String,SPOCPI,DocumentTrackingTableName,2020-01-28T20:08:08.421Z
+HTMLInputValidation,Edm.String,,Edm.String,SPOCPI,HTMLInputValidation,2020-01-30T07:04:45.873Z
+IsLoggingEnabled,Edm.String,TRUE,Edm.String,SPOCPI,IsLoggingEnabled,2020-01-28T20:07:49.882Z
+IsRedisCacheEnabled,Edm.String,TRUE,Edm.String,SPOCPI,IsRedisCacheEnabled,2020-01-28T20:07:54.629Z
+OutputQueueNames,Edm.String,doctrackqueue,Edm.String,SPOCPI,OutputQueueNames,2020-02-10T12:04:38.730Z
+SubscriptionExpirationDays,Edm.String,21,Edm.String,SPOCPI,SubscriptionExpirationDays,2020-01-30T07:03:24.508Z
+SubscriptionIndexName,Edm.String,subscriptionstable-index,Edm.String,SPOCPI,SubscriptionIndexName,2020-01-28T20:08:46.914Z
+SubscriptionIndexerName,Edm.String,subscriptions-indexer,Edm.String,SPOCPI,SubscriptionIndexerName,2020-01-30T07:03:54.621Z
+SubscriptionTableName,Edm.String,Subscriptions,Edm.String,SPOCPI,SubscriptionTableName,2020-01-28T20:08:18.168Z
+TrackingIndexName,Edm.String,documenttrackingtable-index,Edm.String,SPOCPI,TrackingIndexName,2020-01-28T20:08:51.307Z
+TrackingIndexerName,Edm.String,documenttrackingtable-index,Edm.String,SPOCPI,TrackingIndexerName,2020-01-30T07:04:18.732Z
+CPDriveDeltaTransTableName ,Edm.String,DrivesDeltaTransaction,Edm.String,SPOCPI,CPDriveDeltaTransTableName ,2020-01-30T07:04:18.732Z
+ConfidentialSite ,Edm.String,ZZ;YY,Edm.String,SPOCPI,ConfidentialSite ,2020-01-30T07:04:18.732Z

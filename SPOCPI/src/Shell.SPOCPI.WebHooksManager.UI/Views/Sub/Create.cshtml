@@ -1,0 +1,206 @@
+﻿<!--
+// -----------------------------------------------------------------------
+// <copyright file="Create.cshtml" company="Microsoft Corporation">
+    // Copyright (c) Microsoft Corporation
+    // All rights reserved.
+    // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+    // KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    // IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+    // PARTICULAR PURPOSE.
+    //
+</copyright>
+//-----------------------------------------------------------------------
+-->
+@{
+    ViewData["Title"] = "Create Subscription(s)";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+<section class="content-header">
+    <h1>
+        @ViewData["Title"]
+        <small>@ViewData["Message"]</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Subscriptions</h3>
+        </div>
+        <div class="panel-body">
+            @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                <input type="hidden" id="isAdmin" value="true">
+            }
+            <form role="form" id="createSubRadio" class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-5 col-sm-offset-4">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="createType" id="createType" value="individual" checked />
+                                Individual
+                            </label>
+                        </div>
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="createType" id="createType" value="bulk" />
+                                Bulk
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form role="form" id="individualCreate" class="form-horizontal">
+                <div class="form-group">
+                    <label for="SiteUrl" class="col-sm-4 control-label">
+                        Site Url
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="hidden" class="form-control" id="ConfidentialSite" name="ConfidentialSite" value="@ViewData["confidentialSite"]" />
+                        <input type="url" class="form-control" id="SiteUrlInput" name="SiteUrl" placeholder="Enter Site Url" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="LibraryUrl" class="col-sm-4 control-label">
+                        Library Url
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="url" class="form-control" id="LibraryUrlInput" name="LibraryUrl" placeholder="Enter Library Url" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="OutputQueueNames" class="col-sm-4 control-label">
+                        Activity Type(s)
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="queueNamesAutoComplete" name="OutputQueueNames" placeholder="Enter Activity Type(s)" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Description" class="col-sm-4 control-label">
+                        Description
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="DescriptionInput" name="Description" placeholder="Enter a description" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Parameters" class="col-sm-4 control-label">
+                        Parameters
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="ParametersInput" name="Parameters" placeholder="Enter Parameters"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="IncludeFolderRelativePath" class="col-sm-4 control-label">
+                        Folder Relative Path
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="IncludeFolderRelativePathInput" name="IncludeFolderRelativePath" placeholder="Include Folder Relative Path" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-5 col-sm-offset-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="IsActive" title="Activate the subscription" name="IsActive" /> Is Active
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-5 col-sm-offset-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="AutoIndex" title="Auto Index the subscription" name="AutoIndex" /> Auto Index
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-4">
+                        <button type="button" class="btn btn-primary" id="createSub">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <form role="form" id="bulkUploadForm" style="display:none;" class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputFile" class="col-sm-4 control-label">File Input</label>
+                    <div class="col-sm-5">
+                        <input type="file" id="inputFile" class="" accept=".csv" />
+                        <p class="help-block">Please upload a valid csv file, you can download the format <a href="~/content/sample.csv">here</a></p>
+                    </div>
+                </div>
+                <div class="col-sm-9 col-sm-offset-4">
+                    <button type="button" class="btn btn-primary" id="createBulk">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <partial name="_ModalsPartial" />
+</section>
+@section scripts {
+    <script type="text/javascript" src="~/js/create.js"></script>
+    <script type="text/javascript">
+	$(document).ready(function () {
+
+		$("#queueNamesAutoComplete").on("keydown", function (event) {
+		if (event.keyCode === $.ui.keyCode.TAB &&
+			$(this).autocomplete("instance").menu.active) {
+			event.preventDefault();
+		}
+	})
+		.autocomplete({
+			minLength: 3,
+			source: function (request, response) {
+				$.ajax({
+					url: '@Url.Action("AutocompleteSuggestions","subscriptions")',
+					data: {
+						term: split(request.term).pop()
+					},
+					success: function (data) {
+						var ParsedObject = $.parseJSON(data);
+						response($.map(ParsedObject, function (item) {
+							return {
+								value: item.value
+							};
+						}))
+					}
+				});
+			},
+			focus: function () {
+				// prevent value inserted on focus
+				return false;
+			},
+			select: function (event, ui) {
+				var terms = split(this.value);
+				// remove the current input
+				terms.pop();
+				// add the selected item
+				terms.push(ui.item.value);
+				// add placeholder to get the comma-and-space at the end
+				terms.push("");
+				this.value = terms.join(";");
+				return false;
+			}
+		});
+});
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

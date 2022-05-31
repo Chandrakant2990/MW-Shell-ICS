@@ -1,0 +1,99 @@
+﻿<!--
+// -----------------------------------------------------------------------
+// <copyright file="Index.cshtml" company="Microsoft Corporation">
+	// Copyright (c) Microsoft Corporation
+	// All rights reserved.
+	// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+	// KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+	// IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+	// PARTICULAR PURPOSE.
+	//
+</copyright>
+//-----------------------------------------------------------------------
+-->
+@{
+	ViewData["Title"] = "Analytics Dashboard";
+}
+
+<section class="content-header">
+ <h1>
+		@ViewData["Title"]
+  <small></small>
+ </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid dashboard" id="dashboardContent">
+ <div class="row">
+  <div class="d-flex justify-content-center show" id="divSpinner">
+   <div class="loader" id="loader-1"></div>
+   <div class="spinner-border" role="status">
+	<span class="sr-only">Loading...</span>
+   </div>
+  </div>
+  <div class="nav-tabs-custom hide">
+   <ul class="nav nav-tabs">
+	<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><h4>Site & Library Metrics</h4></a></li>
+	<li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><h4>Azure Technical Metrics</h4></a></li>
+   </ul>
+   <div class="tab-content">
+	<div class="tab-pane active" id="tab_1">
+	 <div class="box">
+	  <div class="box-header with-border">
+	   <partial name="_SitesDropdownPartial" />
+	  </div>
+	  <div class="box-body">
+	   <table id="statsTable" summary="Statistics Table" class="table table-bordered table-striped dataTable" width="100%">
+		<thead>
+		 <tr>
+		  <th scope="col" width="20px"></th>
+		  <th scope="col">Site Url</th>
+		  <th scope="col">Library Url</th>
+		  <th scope="col" class="hidden">File Count (SharePoint)</th>
+		  <th scope="col" class="hidden">File Count (Azure)</th>
+		  <th scope="col" class="hidden">File Type (SharePoint)</th>
+		  <th scope="col" class="hidden">File Type (Azure)</th>
+		  <th scope="col" class="hidden">Last Refresh Time (SharePoint)</th>
+		  <th scope="col" class="hidden">Last Process Time (Azure)</th>
+		 </tr>
+		</thead>
+	   </table>
+	  </div>
+	 </div>
+	</div>
+	<!-- /.tab-pane -->
+	<div class="tab-pane" id="tab_2">
+	 <div class="info-box mb-3">
+	  <span class="info-box-icon bg-orange" id="subscriptionTrackingTotalCount" title="Total Subscription Count">-</span>
+
+	  <div class="info-box-content">
+	   <span class="info-box-text">Subscription Tracking</span>
+	   <span class="az-techmetrics-duration-text">Last 01 Hours: </span><span class="az-techmetrics-duration-value" id="subscriptionTrackingLast1">-</span><br>
+	   <span class="az-techmetrics-duration-text">Last 24 Hours: </span><span class="az-techmetrics-duration-value" id="subscriptionTrackingLast24">-</span><br>
+	   <span class="az-techmetrics-duration-text">Last Refresh: </span><span class="az-techmetrics-duration-value" id="subscriptionTrackingLastRefresh">-</span>
+	  </div>
+	  <!-- /.info-box-content -->
+	 </div>
+	 <!-- /.info-box -->
+	 <div class="info-box mb-3">
+	  <span class="info-box-icon bg-green" id="documentTrackingTotalCount" title="Total Document Count">-</span>
+
+	  <div class="info-box-content">
+	   <span class="info-box-text">Document Tracking</span>
+	   <span class="az-techmetrics-duration-text">Last 01 Hours: </span><span class="az-techmetrics-duration-value" id="documentTrackingLast1">-</span><br>
+	   <span class="az-techmetrics-duration-text">Last 24 Hours: </span><span class="az-techmetrics-duration-value" id="documentTrackingLast24">-</span><br>
+	   <span class="az-techmetrics-duration-text">Last Refresh: </span><span class="az-techmetrics-duration-value" id="documentTrackingLastRefresh">-</span>
+	  </div>
+	  <!-- /.info-box-content -->
+	 </div>
+	</div>
+   </div>
+   <!-- /.tab-content -->
+  </div>
+
+ </div>
+</section>
+
+@section scripts {
+<script type="text/javascript" src="~/js/analytics.js?releaseVersion=18102021"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

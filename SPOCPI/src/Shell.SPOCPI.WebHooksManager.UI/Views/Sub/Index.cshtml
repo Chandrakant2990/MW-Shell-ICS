@@ -1,0 +1,77 @@
+﻿<!--
+// -----------------------------------------------------------------------
+// <copyright file="Index.cshtml" company="Microsoft Corporation">
+    // Copyright (c) Microsoft Corporation
+    // All rights reserved.
+    // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+    // KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    // IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+    // PARTICULAR PURPOSE.
+    //
+</copyright>
+//-----------------------------------------------------------------------
+-->
+
+@{
+    ViewData["Title"] = "Subscriptions";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+<section class="content-header">
+    <h1>
+        @ViewData["Title"]
+        <small>@ViewData["Message"]</small>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+        {
+            <input type="hidden" id="isAdmin" value="true">
+            <a role="button" href="~/sub/create" class="btn btn-primary" style="float:right" id="createSub">
+                Create
+            </a>
+        }
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-body">
+            <table id="subscriptionsTable" summary="Subscription Table" class="table table-bordered table-striped dataTable" width="100%">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" width="40px"></th>
+                        <th scope="col">Subscription Id</th>
+                        <th scope="col">Library Url</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Creation Date</th>
+                        <th scope="col" class="notexport">Status</th>
+                        <th scope="col" width="85px" class="notexport">Actions</th>
+                        <th scope="col" class="hidden">Partition Key</th>
+                        <th scope="col" class="hidden">Drive Id</th>
+                        <th scope="col" class="hidden">Site Url</th>
+                        <th scope="col" class="hidden">Subscription Status</th>
+                        <th scope="col" class="hidden">Activity Type</th>
+                        <th scope="col" class="hidden">Is Active</th>
+                        <th scope="col" class="hidden">Auto Index</th>
+                        <th scope="col" class="hidden">Folder Relative Path</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <partial name="_ModalsPartial" />
+</section>
+@section scripts {
+    <script type="text/javascript" src="~/lib/DataTables/processing.js"></script>
+    <script type="text/javascript" src="~/js/index.js">
+    </script>
+}

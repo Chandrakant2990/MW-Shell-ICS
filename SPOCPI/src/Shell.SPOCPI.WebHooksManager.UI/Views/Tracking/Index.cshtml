@@ -1,0 +1,65 @@
+﻿<!--
+// -----------------------------------------------------------------------
+// <copyright file="Index.cshtml" company="Microsoft Corporation">
+    // Copyright (c) Microsoft Corporation
+    // All rights reserved.
+    // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+    // KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    // IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+    // PARTICULAR PURPOSE.
+    //
+</copyright>
+//-----------------------------------------------------------------------
+-->
+
+@{
+    ViewData["Title"] = "Document Tracking";
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["Title"]
+
+        @if (!String.IsNullOrEmpty(ViewData["DriveId"].ToString()))
+        {
+            <span> [@ViewData["DriveId"]] </span>
+        }
+        <small>@ViewData["Message"]</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">List of drive items</h3>
+        </div>
+        <div class="box-body">
+            <table id="trackingTable" summary="Drive Item Table" class="table table-bordered table-striped dataTable" width="100%">
+                <thead>
+                    <tr>
+                        <th scope="col" width="40px"></th>
+                        <th scope="col" width="35px" class="notexport">Type</th>
+                        <th scope="col">Drive Item Id</th>
+                        <th scope="col">File Name</th>
+                        <th scope="col">Web Url</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">IsFolder</th>
+                        <th scope="col">CTag Change</th>
+                        <th scope="col">ETag Change</th>
+                        <th scope="col" class="hidden">Partition Key</th>
+                        <th scope="col" class="hidden">Row Key</th>
+                        <th scope="col" class="hidden">Site Id</th>
+                        <th scope="col" class="hidden">Web Id</th>    
+                        <th scope="col" class="hidden">List Id</th>
+                        <th scope="col" class="hidden">List Item Id</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <partial name="_ModalsPartial" />
+</section>
+@section scripts {
+    <script type="text/javascript" src="~/js/tracking.js">
+    </script>
+}

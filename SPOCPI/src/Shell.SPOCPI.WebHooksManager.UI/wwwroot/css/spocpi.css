@@ -1,0 +1,203 @@
+﻿
+td.details-control {
+	background: url('../images/details_open.png') no-repeat center center;
+	cursor: pointer;
+}
+
+tr.shown td.details-control {
+	background: url('../images/details_close.png') no-repeat center center;
+}
+
+td.url-cell {
+	word-break: break-all;
+}
+
+.btn.btn-icon {
+	padding: 3px 6px;
+}
+
+.btn.btn-margin {
+	margin-right: 5px;
+}
+
+.skin-blue .main-header .logo {
+	background-color: transparent !important;
+}
+
+.skin-blue .sidebar-menu > li.header {
+	color: white !important;
+}
+
+#subscriptionsTable.table.dataTable tbody td.select-checkbox:before {
+	margin-top: 5px !important;
+}
+
+#subscriptionsTable.table.dataTable tr.selected td.select-checkbox:after {
+	margin-top: 0px !important;
+}
+
+.config-text-format {
+	word-break: break-word;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-all;
+}
+
+/* Dashboard CSS - Starts */
+#dashboardContent #sitesDropdownMenu .list-group-item {
+	background-color: none !important;
+}
+
+#dashboardContent .navbar-nav .nav-item {
+	list-style: none;
+}
+
+#sitesDropdownTab {
+	width: 600px;
+}
+
+#dashboardContent nav.nav {
+	margin-left: -40px !important;
+}
+
+#dashboardContent .selectSitesLibraryLabel {
+	margin-top: 10px !important;
+}
+
+#dashboardContent #statsTable_wrapper > div.dt-buttons {
+	float: left !important;
+}
+
+#dashboardContent #statsTable_wrapper > div#statsTable_filter {
+	float: right !important;
+}
+
+#dashboardContent .info-box-icon {
+	width: 100px !important;
+	font-size: 22px !important;
+}
+
+#dashboardContent .info-box-content {
+	margin-left: 100px !important;
+}
+
+.az-techmetrics-duration-text {
+	float: left;
+}
+
+.az-techmetrics-duration-value {
+	font-weight: bold;
+	font-size: 14px;
+	padding-left: 5px;
+}
+
+/* Center the loader */
+#loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 1;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border: 16px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 16px solid #3498db;
+	width: 120px;
+	height: 120px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+table#statsTable .details-control {
+	width: 20px !important;
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spinner {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.spinner:before {
+	content: '';
+	box-sizing: border-box;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 20px;
+	height: 20px;
+	margin-top: -10px;
+	margin-left: -10px;
+	border-radius: 50%;
+	border: 2px solid #ccc;
+	border-top-color: #333;
+	animation: spinner .6s linear infinite;
+}
+
+
+.loader {
+	width: 100px;
+	height: 100px;
+	border-radius: 100%;
+	position: relative;
+	margin: 0 auto;
+}
+
+/* LOADER 1 */
+
+#loader-1:before, #loader-1:after {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	border: 10px solid transparent;
+	border-top-color: #3498db;
+}
+
+#loader-1:before {
+	z-index: 100;
+	animation: spin 1s infinite;
+}
+
+#loader-1:after {
+	border: 10px solid #ccc;
+}
+
+#divSpinner {
+	position: fixed;
+	z-index: 999;
+	height: 2em;
+	width: 2em;
+	overflow: visible;
+	margin: auto;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+/* Dashboard CSS - Ends */

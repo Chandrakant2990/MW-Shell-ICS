@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NotificationReceiver.FunctionApp</name>
+    </assembly>
+    <members>
+        <member name="T:NotificationReceiver.FunctionApp.NotificationReceiver">
+            <summary>
+            The NotificationReceiver Class to receive the notifications and push it into a queue.
+            </summary>
+        </member>
+        <member name="F:NotificationReceiver.FunctionApp.NotificationReceiver.LoggerComponent">
+            <summary>
+            The logger component.
+            </summary>
+        </member>
+        <member name="M:NotificationReceiver.FunctionApp.NotificationReceiver.Run(Microsoft.AspNetCore.Http.HttpRequest,Microsoft.Azure.WebJobs.ICollector{Microsoft.Azure.ServiceBus.Message},Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Receives the notification and enqueue it.
+            </summary>
+            <param name="req">The request.</param>
+            <param name="incomingNotification">The incoming notification.</param>
+            <param name="log">The Out of the Box logger.</param>
+            <returns>Task Status.</returns>
+        </member>
+        <member name="T:NotificationReceiver.FunctionApp.Resource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:NotificationReceiver.FunctionApp.Resource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:NotificationReceiver.FunctionApp.Resource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:NotificationReceiver.FunctionApp.Resource.DocumentUpdateNotification">
+            <summary>
+              Looks up a localized string similar to Received notifications for document change/upload.
+            </summary>
+        </member>
+        <member name="P:NotificationReceiver.FunctionApp.Resource.Exception">
+            <summary>
+              Looks up a localized string similar to Exception in PopulateTracking FunctionApp..
+            </summary>
+        </member>
+        <member name="P:NotificationReceiver.FunctionApp.Resource.RequestProcessed">
+            <summary>
+              Looks up a localized string similar to C# HTTP trigger function processed a request..
+            </summary>
+        </member>
+    </members>
+</doc>

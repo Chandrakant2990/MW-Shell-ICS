@@ -1,0 +1,8 @@
+{
+    "name" : "azurelibrarymetrics-indexer",
+    "dataSourceName" : "azurelibrarymetricstable",
+    "targetIndexName" : "azurelibrarymetrics-index",
+    "schedule" : { 
+        "interval" : "PT5M"
+        }
+}

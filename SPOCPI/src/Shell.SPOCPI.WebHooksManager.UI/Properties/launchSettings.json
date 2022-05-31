@@ -1,0 +1,26 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:44383",
+      "sslPort": 44384
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "AzureAd:Domain": "[[Replace with AAD Domain Name]]",
+        "AzureAd:ClientId": "[[Replace with AAD App Client Id]]",
+        "AzureAd:ClientSecret": "[[Replace with AAD App Client Secret]]",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "IsRedisCacheEnabled": "false",
+        "ConnectionStrings:ConfigurationConnectionString": "[[Replace with Configuration Connection String]]",
+        "ConnectionStrings:RedisConnectionString": "[[Replace with Redis Connection String]]",
+        "CPServiceBusConnectionString": "[[Replace with CP Service Bus Connection String]]"
+      }
+    }
+  }
+}

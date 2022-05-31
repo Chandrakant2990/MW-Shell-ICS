@@ -1,0 +1,15 @@
+{
+	"profiles": {
+		"Shell.SPOCPI.MigrationPipeline.WebJob": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "development",
+				"ConnectionStrings:RedisConnectionString": "[[Replace with SPOCPI Redis Cache Connection String]]",
+				"ConnectionStrings:SDUDataStorageConnectionString": "[[Replace with SDU Data Storage Connection String]]",
+				"MigrationMinuteSchedule": "00:01:00",
+				"BatchLocationSize": "5",
+				"QueuedPipelinesLimit": "5"
+			}
+		}
+	}
+}

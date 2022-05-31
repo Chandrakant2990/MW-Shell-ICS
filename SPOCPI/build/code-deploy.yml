@@ -1,0 +1,174 @@
+﻿# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+name: 'SPOCPI-Code-Deploy'
+
+trigger: 
+  - master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'SPOCPI/src/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  
+workspace:
+  clean: True
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: MSBuild@1
+  inputs:
+    solution: 'SPOCPI/src/*.sln'
+    msbuildArguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)"'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build WebHooks UI App'
+  inputs:
+    command: 'build'
+    projects: '**/Shell.SPOCPI.WebHooksManager.UI.csproj'
+    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive WebHooks UI App'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.WebHooksManager.UI.zip'
+    replaceExistingArchive: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Notification Receiver Function App'
+  inputs:
+    command: 'build'
+    projects: '**/Shell.SPOCPI.NotificationReceiver.FunctionApp.csproj'
+    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive Notification Receiver Function App'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.NotificationReceiver.FunctionApp.zip'
+    replaceExistingArchive: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Change Processor Function App'
+  inputs:
+    command: 'build'
+    projects: '**/Shell.SPOCPI.ChangeProcessor.FunctionApp.csproj'
+    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive Change Processor Function App'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.ChangeProcessor.FunctionApp.zip'
+    replaceExistingArchive: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Populate Tracking Function App'
+  inputs:
+    command: 'build'
+    projects: '**/Shell.SPOCPI.PopulateTracking.FunctionApp.csproj'
+    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive Populate Tracking Function App'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.PopulateTracking.FunctionApp.zip'
+    replaceExistingArchive: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish WebHooks WebJob'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/Shell.SPOCPI.WebHooksManager.WebJob.csproj'
+    arguments: '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/WebHooksWebJob"'
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- task: ArchiveFiles@2
+  displayName: 'Archive WebHooks WebJob'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/WebHooksWebJob'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.WebHooksManager.WebJob.zip'
+    replaceExistingArchive: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Change Processor WebJob'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/Shell.SPOCPI.ChangeProcessor.WebJob.csproj'
+    arguments: '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob"'
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- task: ArchiveFiles@2
+  displayName: 'Archive Change Processor WebJob'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.ChangeProcessor.WebJob.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    ArtifactName: azureartifacts
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+  condition: succeededOrFailed()
+
+- task: DownloadBuildArtifacts@0
+  displayName: 'Download Build Artifacts'
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'azureartifacts'
+    downloadPath: '$(System.ArtifactsDirectory)'
+
+- task: CopyFiles@2
+  displayName: 'Copy Deploy Files'
+  inputs:
+    SourceFolder: 'SPOCPI/deploy'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/deploy'
+
+- task: AzureCLI@2
+  displayName: 'Deploy code to the azure resources'
+  inputs:
+    azureSubscription: $(serviceConnectionName)
+    scriptType: ps
+    scriptLocation: scriptPath
+    scriptPath: '$(System.ArtifactsDirectory)/deploy/codedeploy.ps1'
+    scriptArguments: '-environmentName "$(environment)" -resourceGroupName "$(resourceGroupName)"'
+
+- task: AzureCLI@2
+  displayName: 'Restart App Services'
+  inputs:
+    azureSubscription: $(serviceConnectionName)
+    scriptType: ps
+    scriptLocation: scriptPath
+    scriptPath: '$(System.ArtifactsDirectory)/deploy/restartservices.ps1'
+    scriptArguments: '-environmentName "$(environment)" -resourceGroupName "$(resourceGroupName)"'

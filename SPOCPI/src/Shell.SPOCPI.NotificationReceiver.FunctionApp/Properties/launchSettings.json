@@ -1,0 +1,14 @@
+{
+	"profiles": {
+		"Shell.SPOCPI.NotificationReceiver.FunctionApp": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"ConnectionStrings:ConfigurationConnectionString": "[[Replace this with SPOCPI's WebHooks Storage Connection String]]",
+				"ConnectionStrings:RedisConnectionString": "[[Replace this with SPOCPI's Redis Cache Connection String]]",
+				"CPServiceBusConnectionString": "[[Replace this with SPOCPI's Service Bus Root Manage Shared Access Key]]",
+				"IsRedisCacheEnabled": "true",
+				"AzureWebJobsStorage": "[[Replace this with SPOCPI's DocTrac Storage Connection String]]"
+			}
+		}
+	}
+}

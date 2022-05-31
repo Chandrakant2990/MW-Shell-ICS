@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "Sample1";
+    ViewData["Message"] = "Showing the latest documents updates received from SPO (excl. Deletion)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1 style="color: darkolivegreen;">
+        @ViewData["Title"] - @ViewData["Message"]   
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-body">
+            <table id="sample1Table" class="table table-bordered table-striped dataTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Creation DateTime</th>
+                        <th>Modification DateTime</th>
+                        <th>Size</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="box-footer">
+            <p style="font-style:italic">Powered by SPOCPI !</p>
+        </div>
+    </div>
+</section>
+@section scripts {
+    <script type="text/javascript">
+        var queryText = "";
+
+        $(document).ready(function () {
+            //var tableFormat = "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'<\"#dvsch\">>>" +
+            //    "<'row'<'col-sm-12'tr>>" +
+            //    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
+
+            var table = $('#sample1Table').DataTable({
+                ajax: {
+                    "url": "http://localhost:7071/api/Sample1",
+                    "dataSrc": ""
+                },
+                columns: [
+                    { data: "id" },
+                    { data: "name" },
+                    {
+                        data: "createdDateTime",
+                        render: function (data, type, row) {
+                            if (data) {
+                                return moment(data).format("MM-DD-YYYY HH:mm:ss");
+                            }
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        data: "lastModifiedDateTime",
+                        render: function (data, type, row) {
+                            if (data) {
+                                return moment(data).format("MM-DD-YYYY HH:mm:ss");
+                            }
+                            else
+                                return "";
+                        }
+                    },
+                    { data: "size"},
+                    {
+                        "orderable": false,
+                        "render": function (data, type, row, meta) {
+                            let colContent = "<div>";
+                            colContent += "<button title='Action 1' type='button' class='btn btn-success btn-sm fa fa-balance-scale' style='margin-right:5px;'></button>";
+                            colContent += "<button title='Action 2' type='button' class='btn btn-warning btn-sm fa fa-archive'></button>";
+                            colContent += "</div>";
+                            return colContent;
+
+                        }
+                    }
+                    /*and so on, keep adding data elements here for all your columns.*/
+                ]
+            });
+        });
+
+    </script>
+}

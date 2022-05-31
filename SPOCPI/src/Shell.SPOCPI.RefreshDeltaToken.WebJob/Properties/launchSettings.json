@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Shell.SPOCPI.RefreshDeltaToken.WebJob": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "RefreshDeltaTokenCustomMinuteSchedule": "00:01:00",
+        "ASPNETCORE_ENVIRONMENT": "dev",
+        "IsRedisCacheEnabled": "true",
+        "DeltaTokenExpiryDays": "1",
+        "ConnectionStrings:ConfigurationConnectionString": "[Connection String]",
+        "ConnectionStrings:RedisConnectionString": "[Connection String]"
+      }
+    }
+  }
+}

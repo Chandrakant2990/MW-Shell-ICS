@@ -1,0 +1,10 @@
+{   
+    "name" : "azurecommonmetricstable",
+    "type" : "azuretable",
+    "credentials" : { 
+        "connectionString" : "[STORAGECONNECTION]" 
+    },  
+    "container" : { 
+        "name" : "AzureCommonMetrics" 
+    }
+}

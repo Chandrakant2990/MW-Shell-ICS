@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Shell.SPOCPI.ChangeProcessor.FunctionApp</name>
+    </assembly>
+    <members>
+        <member name="T:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor">
+            <summary>
+            Change Processor Function App.
+            </summary>
+        </member>
+        <member name="F:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor.logger">
+            <summary>
+            The logger component instance.
+            </summary>
+        </member>
+        <member name="M:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor.#ctor(Shell.SPOCPI.Common.ILoggerComponent)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor" /> class.
+            </summary>
+            <param name="loggerComponent">logger instance.</param>
+        </member>
+        <member name="M:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor.Run(System.String,Microsoft.Azure.Cosmos.Table.CloudTable)">
+            <summary>
+            Runs the specified notification message.
+            </summary>
+            <param name="notificationMessage">The notification message.</param>
+            <param name="notificationTable">The notification table.</param>
+            <exception cref="T:System.Exception">Error in Change Processing Function App.</exception>
+            <returns>Task status.</returns>
+        </member>
+        <member name="M:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor.IsTransientError(Microsoft.Azure.Cosmos.Table.TableResult)">
+            <summary>
+            Determines whether [is transient error] [the specified result].
+            </summary>
+            <param name="result">The result.</param>
+            <returns>
+              <c>true</c> if [is transient error] [the specified result]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor.IsSuccess(Microsoft.Azure.Cosmos.Table.TableResult)">
+            <summary>
+            Determines whether the specified result is success.
+            </summary>
+            <param name="result">The result.</param>
+            <returns>
+              <c>true</c> if the specified result is success; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Shell.SPOCPI.ChangeProcessor.FunctionApp.ChangeProcessor.ProcessQueueMessage(Shell.SPOCPI.Common.Notification,Microsoft.Azure.Cosmos.Table.CloudTable)">
+            <summary>
+            Processes the queue message.
+            </summary>
+            <param name="notification">The notification.</param>
+            <param name="notificationTable">The notification table.</param>
+            <returns>A flag indicating whether the processing of queue message is successful or not.</returns>
+        </member>
+        <member name="T:Shell.SPOCPI.ChangeProcessor.FunctionApp.Resource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.ChangeProcessor.FunctionApp.Resource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.ChangeProcessor.FunctionApp.Resource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.ChangeProcessor.FunctionApp.Resource.FunctionAppError">
+            <summary>
+              Looks up a localized string similar to Error in Change Processing Function App..
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.ChangeProcessor.FunctionApp.Resource.FunctionAppException">
+            <summary>
+              Looks up a localized string similar to Exception in ChangeProcessor FunctionApp..
+            </summary>
+        </member>
+        <member name="P:Shell.SPOCPI.ChangeProcessor.FunctionApp.Resource.FunctionAppTrigger">
+            <summary>
+              Looks up a localized string similar to Triggerred the Change Processor Function..
+            </summary>
+        </member>
+        <member name="T:Shell.SPOCPI.ChangeProcessor.FunctionApp.Startup">
+            <summary>
+            The function start up class.
+            </summary>
+        </member>
+        <member name="M:Shell.SPOCPI.ChangeProcessor.FunctionApp.Startup.Configure(Microsoft.Azure.Functions.Extensions.DependencyInjection.IFunctionsHostBuilder)">
+            <summary>
+            Configures the specified builder.
+            </summary>
+            <param name="builder">The builder.</param>
+        </member>
+    </members>
+</doc>
