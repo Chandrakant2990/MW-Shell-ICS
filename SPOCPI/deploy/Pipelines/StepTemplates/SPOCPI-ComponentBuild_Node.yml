@@ -1,0 +1,44 @@
+parameters:
+  SolutionFilesToCopy: []
+  WorkingDirectory: ""
+  NodeVersion: 10.x
+  NpmCustomCommand: ""
+
+steps:
+  - checkout: self
+  - script: dir $(Build.SourcesDirectory)
+
+  - task: NodeTool@0
+    displayName: "Use Node ${{ parameters.NodeVersion }}"
+    inputs:
+      versionSpec: ${{ parameters.NodeVersion }}
+      checkLatest: true
+  
+  - task: CacheBeta@0
+    inputs:
+      key: ${{ parameters.WorkingDirectory }}/package-lock.json
+      path: ${{ parameters.WorkingDirectory }}/node_modules
+      cacheHitVar: CACHE_RESTORED
+    displayName: 'Cache Npm'
+  
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      command: 'install'
+      workingDir: '${{ parameters.WorkingDirectory }}'
+
+  - task: Npm@1
+    displayName: 'Run npm build'
+    inputs:
+      command: 'custom'
+      workingDir:  "${{ parameters.WorkingDirectory }}"
+      customCommand: ${{ parameters.NpmCustomCommand }}
+
+  - ${{ each copyTask in parameters.SolutionFilesToCopy }}:
+    - task: CopyFiles@2
+      displayName: ${{ copyTask.displayName }}
+      inputs:
+        SourceFolder: ${{ copyTask.SourceFolder }}
+        Contents: |
+          sharepoint/**/*.sppkg
+        TargetFolder: ${{ copyTask.TargetFolder }}  

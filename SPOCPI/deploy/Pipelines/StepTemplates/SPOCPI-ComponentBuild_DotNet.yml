@@ -1,0 +1,63 @@
+parameters:
+  ExecuteStaticCodeAnalysis: false
+  SolutionBuildList: []
+  SolutionFilesToCopy: []
+
+steps:
+  - task: NuGetToolInstaller@1
+    displayName: 'Nuget Tool Install'
+
+  - task: NuGetCommand@2
+    displayName: 'Nuget Restore'
+    inputs:
+      restoreSolution: '**\*.sln'
+      packagesdirectory: '..\packages'
+
+  - ${{ each buildTask in parameters.SolutionBuildList }}:
+
+    - ${{ if eq(buildTask.toolset, 'vsbuild') }}:
+      - task: VSBuild@1
+        displayName: ${{ buildTask.displayName }}
+        condition: ${{ buildTask.condition }}
+        inputs:
+          solution: ${{ buildTask.solution }}   
+          platform: '$(BuildPlatform)'
+          configuration: '$(BuildConfiguration)'
+          msbuildArgs: ${{ buildTask.buildArgs }}
+
+    - ${{ if eq(buildTask.toolset, 'msbuild') }}:
+      - task: MSBuild@1
+        displayName: ${{ buildTask.displayName }}
+        condition: ${{ buildTask.condition }}
+        inputs:
+          solution: ${{ buildTask.solution }}
+          configuration: '$(BuildConfiguration)'
+          msbuildArgs: ${{ buildTask.buildArgs }}
+
+    - ${{ if eq(buildTask.toolset, 'dotnet') }}:
+      - task: dotnet@1
+        displayName: ${{ buildTask.displayName }}
+        condition: ${{ buildTask.condition }}
+        inputs:
+          command: build
+          projects: ${{ buildTask.solution }}
+          arguments: ${{ buildTask.buildArgs }}
+
+    - ${{ if eq(buildTask.toolset, 'dotnetcli') }}:
+      - task: DotNetCoreCLI@2
+        displayName: ${{ buildTask.displayName }}
+        condition: ${{ buildTask.condition }}
+        inputs:
+          command: build
+          projects: ${{ buildTask.solution }}
+          arguments: ${{ buildTask.buildArgs }}
+
+  - ${{ each copyTask in parameters.SolutionFilesToCopy }}:
+    - task: CopyFiles@2
+      displayName: ${{ copyTask.displayName }}
+      inputs:
+        SourceFolder: ${{ copyTask.SourceFolder }}
+        Contents: |
+          **/*
+          !.git/**/*
+        TargetFolder: ${{ copyTask.TargetFolder }}

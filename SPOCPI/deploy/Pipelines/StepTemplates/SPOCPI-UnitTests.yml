@@ -1,0 +1,40 @@
+parameters:
+  SolutionType: ""  # ["NODE", "DOTNET"]
+  WorkingDirectory: ""
+
+steps:
+  - ${{ if eq(parameters.SolutionType, 'DOTNET') }}:
+
+    - task: VSTest@2
+      displayName: "Server UI Tests"
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+            **\*.*test*.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        runTestsInIsolation: true
+        codeCoverageEnabled: true
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+
+  - ${{ if eq(parameters.SolutionType, 'NODE') }}:
+
+    - task: Npm@1
+      displayName: 'Run npm Test'
+      inputs:
+        command: 'custom'
+        workingDir:  "${{ parameters.WorkingDirectory }}"
+        customCommand: 'run test'
+        continueOnError: true
+
+    - task: PublishTestResults@2
+      displayName: 'Publish unit test report'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '${{ parameters.WorkingDirectory }}/test-results/test-report.xml'
+        failTaskOnFailedTests: true
+        mergeTestResults: true
+        testRunTitle: 'Jest Unit Tests'
+        condition: succeededOrFailed()

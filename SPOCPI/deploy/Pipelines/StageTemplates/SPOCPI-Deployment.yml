@@ -1,0 +1,47 @@
+parameters:
+  StageName: "Deploy"
+  DeployAppArtifacts: 'true'
+  DeployInfra: 'true'
+  RunValidation: 'true'
+  ValidationList: []
+  AzureAppDeploymentJobs: []
+  M365TenantConfigJobs: []
+  AzureServicesDeploymentJobs:  []
+  SPFxDeploymentJobs: []
+  TeamsAppDeploymentJobs: []
+  AzureAppPostDeployTemplate: ''
+  AzureServicesPostDeployTemplate: ''
+  SPFxPostDeployTemplate: ''
+  TeamsPostDeployTemplate: ''
+  M365TenantConfigPostDeployTemplate: ''
+
+stages:
+  - stage: ${{ parameters.StageName }}
+    displayName: "Deployment : ${{ parameters.StageName }}"
+    dependsOn: Build
+    jobs:
+      - template: "/deploy/Pipelines/JobTemplates/MWT-SPONH-PlatformBootstrapDeployment.yml"
+        parameters:
+          DeployInfra: ${{ parameters.DeployInfra }}
+          M365TenantConfigJobs: ${{ parameters.M365TenantConfigJobs }}
+          AzureServicesDeploymentJobs: ${{ parameters.AzureServicesDeploymentJobs }}
+          AzureServicesPostDeployTemplate: ${{ parameters.AzureServicesPostDeployTemplate }}
+          M365TenantConfigPostDeployTemplate: ${{ parameters.M365TenantConfigPostDeployTemplate }}
+
+      - template: "/deploy/Pipelines/JobTemplates/MWT-SPONH-AppArtifactsDeployment.yml"
+        parameters:
+          DeployInfra: ${{ parameters.DeployInfra }}
+          DeployAppArtifacts: ${{ parameters.DeployAppArtifacts }}
+          AzureAppDeploymentJobs: ${{ parameters.AzureAppDeploymentJobs }}
+          SPFxDeploymentJobs: ${{ parameters.SPFxDeploymentJobs }}
+          TeamsAppDeploymentJobs: ${{ parameters.TeamsAppDeploymentJobs }}
+          AzureAppPostDeployTemplate: ${{ parameters.AzureAppPostDeployTemplate }}
+          SPFxPostDeployTemplate: ${{ parameters.SPFxPostDeployTemplate }}
+          TeamsPostDeployTemplate: ${{ parameters.TeamsPostDeployTemplate }}
+
+      - template: "/deploy/Pipelines/JobTemplates/MWT-SPONH-ReleaseValidation.yml"
+        parameters:
+          DeployAppArtifacts: ${{ parameters.DeployAppArtifacts }}
+          RunValidation: ${{ parameters.RunValidation }}
+          ValidationList: ${{ parameters.ValidationList }}
+

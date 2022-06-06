@@ -1,0 +1,29 @@
+parameters:
+  SolutionName: ''
+  BuildList: []
+
+stages:
+  - stage: Build
+    displayName: "Build"
+    jobs:
+      - ${{ each buildJob in parameters.BuildList }}:
+
+        - template: "/deploy/Pipelines/JobTemplates/MWT-SPONH-CoreBuild.yml"
+          parameters:
+            JobName: ${{ buildJob.JobName }}
+            displayName: ${{ buildJob.displayName }}
+            dependsOn: ${{ buildJob.dependsOn }}
+            vmImage: ${{ buildJob.vmImage }}
+            OS: ${{ buildJob.OS }}
+            SelfHostedPool: ${{ variables.SelfHostedPool }}
+            ExecuteStaticCodeAnalysis: ${{ buildJob.ExecuteStaticCodeAnalysis }}
+            ExecuteUnitTests: ${{ buildJob.ExecuteUnitTests }}
+            SolutionType: ${{ buildJob.SolutionType }}  # ["NODE", "DOTNET"]
+            SolutionBuildList: ${{ buildJob.SolutionBuildList }}
+            SolutionFilesToCopy: ${{ buildJob.SolutionFilesToCopy }}
+            WorkingDirectory: ${{ buildJob.WorkingDirectory }}
+            NodeVersion: ${{ buildJob.NodeVersion }}
+            NpmCustomCommand: ${{ buildJob.NpmCustomCommand }}
+            SolutionFilesToArchieve: ${{ buildJob.SolutionFilesToArchieve }}
+            SolutionArtifactPublishTasks: ${{ buildJob.SolutionArtifactPublishTasks }}
+            SolutionDotnetPublishTasks: ${{ buildJob.SolutionDotnetPublishTasks }}

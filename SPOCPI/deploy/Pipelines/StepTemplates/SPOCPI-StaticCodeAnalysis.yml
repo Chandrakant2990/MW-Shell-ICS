@@ -1,0 +1,149 @@
+parameters:
+  toolset: 'vsbuild'
+  SolutionFilesToCopy: []
+  SolutionBuildList: []
+
+steps:
+  - task: WhiteSource Bolt@20
+    displayName: "Analyze with WhiteSource Bolt"
+
+  - ${{ if contains(variables.OrganizationUri, variables.ServicesOrg) }}:
+
+    - task: CredScan@2
+      displayName: "Run CredScan"
+      inputs:
+        toolMajorVersion: 'V2'
+
+  - task: EnterpriseServicesDevOpsTeam.BuildTool-Tasks.task-ServicesDevopsAddToSonarNSG.ServicesDevOpsSonarPreReq@6
+    displayName: 'T-ServicesDevOpsSonarPreReq:'
+
+  - task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
+    displayName: 'Prepare analysis on SonarQube'
+    condition: eq(variables.ExecuteServicesSonar, true)
+    inputs:
+      SonarQube: '$(SonarQube)'
+      projectKey: '$(projectKey)'
+      projectName: '$(projectName)'
+      extraProperties: |
+        SONAR_SCANNER_OPTS=-Xmx2048m
+        sonar.verbose=true
+
+  - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-ComponentBuild_DotNet.yml"
+    parameters:
+      toolset: ${{ parameters.toolset }}
+      SolutionBuildList: ${{ parameters.SolutionBuildList }}
+      SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}
+
+  - task: SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@4
+    displayName: 'Run Code Analysis'
+    condition: eq(variables.ExecuteServicesSonar, true)
+    
+  - task: EnterpriseServicesDevOpsTeam.BuildTool-Tasks.task-ServicesDevopsRemoveFromNSG.ServicesDevOpsSonarPreReqComplete@6
+    displayName: 'T-ServicesDevOpsSonarPreReqComplete:'
+
+  - task: RoslynAnalyzers@2
+    displayName: "Run Roslyn Analyzers"      
+    inputs:
+      userProvideBuildInfo: 'auto'
+
+  - task: PSScriptAnalyzer@1
+    condition: and(eq(variables.ScanPSScripts, true), ne(variables.DeploymentScriptsRoot, ''))
+    displayName: "Run PowerShell Script Analyzer"
+    inputs:
+      Path: '$(DeploymentScriptsRoot)'
+      Settings: 'required'
+      Recurse: true
+
+  - ${{ if contains(variables.OrganizationUri, variables.ServicesOrg) }}:
+  
+      - task: AntiMalware@4
+        inputs:
+            InputType: 'Basic'
+            ScanType: 'CustomScan'
+            FileDirPath: '$(Build.StagingDirectory)'
+            EnableServices: true
+            TreatSignatureUpdateFailureAs: 'Warning'
+            SignatureFreshness: 'UpToDate'
+            TreatStaleSignatureAs: 'Error'
+      - task: Armory@2
+        inputs:
+          targetDirectory: '$(Build.SourcesDirectory)'
+          targetFiles: 'f|**\*.json;-|.gdn\**;'
+
+      - task: ComponentGovernanceComponentDetection@0
+        inputs:
+          scanType: 'LogOnly'
+          verbosity: 'Verbose'
+          sourceScanPath: '$(System.DefaultWorkingDirectory)'
+          alertWarningLevel: 'High'
+      - task: nuget-security-analysis@0
+
+      - task: PoliCheck@2
+        inputs:
+          targetType: 'F'
+          targetArgument: '$(Build.SourcesDirectory)'
+
+      - task: SDLNativeRules@2
+        inputs:
+          userProvideBuildInfo: 'auto'
+
+  - task: SdtReport@1
+    displayName: "Prepare Security Report"
+    inputs:
+      AllTools: false
+      APIScan: false
+      BinSkim: false
+      CodesignValidation: false
+      CredScan: true
+      FortifySCA: false
+      FxCop: false
+      ModernCop: false
+      MSRD: false
+      PoliCheck: ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      RoslynAnalyzers: true
+      RoslynAnalyzersBreakOn: 'Error'
+      SDLNativeRules: ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      Semmle: false
+      TSLint: true
+      TSLintBreakOn: 'Error'
+      ToolLogsNotFoundAction: 'Standard'
+
+  - task: PublishSecurityAnalysisLogs@2
+    displayName: "Publish Security Logs as artifact"
+    inputs:
+      ArtifactName: 'CodeAnalysisLogs'
+      ArtifactType: 'Container'
+      AllTools: false
+      AntiMalware: ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      APIScan: false
+      BinSkim: false
+      CodesignValidation: false
+      CredScan: true
+      FortifySCA: false
+      FxCop: false
+      ModernCop: false
+      MSRD: false
+      PoliCheck: ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      RoslynAnalyzers: true
+      SDLNativeRules: ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      Semmle: false
+      TSLint: true
+      WebScout: false
+      ToolLogsNotFoundAction: 'Standard'
+
+  - task: PostAnalysis@1
+    inputs:
+      AllTools: false
+      APIScan: false
+      BinSkim: false
+      CodesignValidation: false
+      CredScan: true
+      FortifySCA: false
+      FxCop: false
+      ModernCop: false
+      PoliCheck: false # ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      RoslynAnalyzers: false
+      SDLNativeRules: ${{ contains(variables.OrganizationUri, variables.ServicesOrg) }}
+      Semmle: false
+      TSLint: false
+      ToolLogsNotFoundAction: 'Standard'

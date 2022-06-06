@@ -1,0 +1,178 @@
+name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+resources:
+- repo: self
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+
+trigger:
+  branches:
+    include:    
+    - develop
+
+pool:
+  vmImage: 'windows-latest'
+
+# Job Control Variables
+parameters:
+  - name: DeployInfra
+    displayName: Platform Bootstrap Deployment
+    type: boolean
+    default: true
+  
+  - name: DeployAppArtifacts
+    displayName: App Artifacts Deployment
+    type: boolean
+    default: true
+
+  - name: RunValidation
+    displayName: Release Validation
+    type: boolean
+    default: true
+
+
+variables:
+  - template: "/deploy/Pipelines/SPOCPI-PipelineConfigVariables.yml"
+
+stages:
+  # Job Control Parameters
+  - stage: StepControl
+    jobs:
+    - job: ParameterControl
+      steps:
+      - checkout: none
+      - ${{ each item in parameters }}:
+        - bash: |
+              echo "##vso[task.setvariable variable=${{ item.key }}]${{ item.value }}"
+          displayName: "Create Variable ${{ item.key }}"
+          condition: or(startswith('${{ item.key }}', 'Deploy'), startswith('${{ item.key }}', 'Run'))
+
+  # Core Build Stage
+  - template: "/deploy/Pipelines/StageTemplates/SPOCPI-Build.yml"
+    parameters:
+      BuildList: [
+        {
+          JobName: "Solution_Build",
+          displayName: "Solution Build",
+          dependsOn: [],  
+          vmImage: 'windows-latest',
+          OS: Windows_NT,
+          SelfHostedPool: $(SelfHostedPool),
+          ExecuteStaticCodeAnalysis: true,
+          ExecuteUnitTests: false,
+          SolutionType: "DOTNET",
+          SolutionBuildList: [
+            {
+              "displayName": "Build Solution",
+              "toolset": "vsbuild",
+              "condition": "succeeded()",
+              "solution": '**/*.sln',
+              "buildArgs": '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)"'
+            },
+            {
+              "displayName": 'Build WebHooks UI App',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.WebHooksUI.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            },
+            {
+              "displayName": 'Build Notification Receiver Function App',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.NotificationReceiverFunctionApp.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            },
+            {
+              "displayName": 'Build Change Processor Function App',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorFunctionApp.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            },
+            {
+              "displayName": 'Build Populate Tracking Function App',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.PopulateTrackingFunctionApp.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            }
+          ],
+          SolutionFilesToCopy: [
+            {
+              "displayName": "Copy Deploy Files",
+              "SourceFolder": "deploy",
+              "TargetFolder": "$(Build.ArtifactStagingDirectory)"
+            }
+          ],
+          WorkingDirectory: "",
+          NpmCustomCommand: "",
+          SolutionFilesToArchieve: [
+            {
+              "displayName": 'Archive WebHooks UI App',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.WebHooksUI.zip'
+            },
+            {
+              "displayName": 'Archive Notification Receiver Function App',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.NotificationReceiverFunctionApp.zip'
+            },
+            {
+              "displayName": 'Archive Change Processor Function App',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorFunctionApp.zip'
+            },
+            {
+              "displayName": 'Archive Populate Tracking Function App',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.PopulateTrackingFunctionApp.zip'
+            },
+            {
+              "displayName": 'Archive WebHooks WebJob',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/WebHooksWebJob',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.WebHooksWebJob.zip'
+            },
+            {
+              "displayName": 'Archive Change Processor WebJob',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorWebJob.zip'
+            }
+          ],
+          SolutionArtifactPublishTasks: [
+            {
+              "displayName": 'Publish Artifacts',
+              "condition": "succeeded()",
+              "PathtoPublish": "$(Build.ArtifactStagingDirectory)",
+              "ArtifactName": "azureartifacts",
+              "publishLocation": "Container"
+            }
+          ],
+          SolutionDotnetPublishTasks: [
+            {
+              "displayName": 'Publish WebHooks WebJob',
+              "condition": "succeeded()",
+              "publishWebProjects": false,
+              "projects": '**/Microsoft.Consulting.SPO.NotificationHub.WebHooksWebJob.csproj',
+              "arguments": '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/WebHooksWebJob"',
+              "zipAfterPublish": false,
+              "modifyOutputPath": false
+            },
+            {
+              "displayName": 'Publish Change Processor WebJob',
+              "condition": "succeeded()",
+              "publishWebProjects": false,
+              "projects": '**/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorWebJob.csproj',
+              "arguments": '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob"',
+              "zipAfterPublish": false,
+              "modifyOutputPath": false
+            }
+          ]
+        }
+      ]
+    
+  

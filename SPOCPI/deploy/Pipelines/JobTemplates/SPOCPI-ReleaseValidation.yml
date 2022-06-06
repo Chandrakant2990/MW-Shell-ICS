@@ -1,0 +1,24 @@
+parameters:
+  DeployAppArtifacts: true
+  RunValidation: true
+  ValidationList: []
+
+jobs:
+  - ${{ if eq(parameters.RunValidation, true) }}:
+
+    - ${{ each TestJob in parameters.ValidationList }}:
+
+      - job: ${{ TestJob.JobName }}
+
+        ${{ if eq(parameters.DeployAppArtifacts, true) }}:
+          dependsOn: ${{ TestJob.dependsOn }}
+
+        ${{ if ne(parameters.DeployAppArtifacts, true) }}:
+          dependsOn: []
+        
+        steps:
+          - template: ${{ TestJob.Template }}
+            parameters:
+              WorkingDirectory: ${{ TestJob.WorkingDirectory }}
+              SolutionType: ${{ TestJob.SolutionType }}
+

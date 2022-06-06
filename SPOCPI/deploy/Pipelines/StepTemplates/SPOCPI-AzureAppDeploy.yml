@@ -1,0 +1,58 @@
+parameters:
+  AzurePowerShellList: []
+  WebAppDeployList: []
+  AzureCliList: []
+  ArtifactSource: 'current'
+  ArtifactName: 'AzureAppBuildDrop'
+  ArtifactPatterns: '**/*.zip'
+  AzureAppPostDeployTemplate: ''
+
+steps:
+- checkout: none
+- ${{ if eq(parameters.ArtifactSource, 'current') }}:
+  - download: ${{ parameters.ArtifactSource }}
+    artifact: ${{ parameters.ArtifactName }}
+    patterns: ${{ parameters.ArtifactPatterns }}
+
+- ${{ if eq(parameters.ArtifactSource, 'specific') }}:
+  - download: ${{ parameters.ArtifactSource }}
+    artifact: ${{ parameters.ArtifactName }}
+    patterns: ${{ parameters.ArtifactPatterns }}
+    project: # Required when source == Specific
+    pipeline: # Required when source == Specific
+    path: '$(Pipeline.Workspace)'
+
+- ${{ each powerShellTask in parameters.AzurePowerShellList }}:
+
+  - task: AzurePowerShell@5
+    displayName: ${{ powerShellTask.displayName }}
+    inputs:
+      ConnectedServiceNameARM: ${{ powerShellTask.azureResourceManagerConnection}}
+      ScriptPath: ${{ powerShellTask.ScriptPath }}
+      ScriptArguments: ${{ powerShellTask.ScriptArguments}}
+      TargetAzurePs: LatestVersion   
+
+- ${{ each deployTask in parameters.WebAppDeployList }}:
+  - task: AzureRmWebAppDeployment@4
+    displayName: ${{ deployTask.displayName }}
+    inputs:
+      azureSubscription: ${{ deployTask.azureServiceConnection }}
+      ConnectionType: ${{ deployTask.ConnectionType }}
+      appType: ${{ deployTask.appType }}
+      resourceGroupName: ${{ deployTask.resourceGroupName }} 
+      WebAppName: ${{ deployTask.WebAppName }}
+      packageForLinux: ${{ deployTask.packageForLinux }}
+
+- ${{ each cliTask in parameters.AzureCliList }}:
+  - task: AzureCLI@2
+    displayName: ${{ cliTask.displayName }}
+    inputs:
+      azureSubscription: ${{ cliTask.azureSubscription }}
+      addSpnToEnvironment: ${{ cliTask.addSpnToEnvironment }}
+      scriptType: ${{ cliTask.scriptType }}
+      scriptLocation: ${{ cliTask.scriptLocation }}
+      scriptPath: ${{ cliTask.scriptPath }}
+      scriptArguments: ${{ cliTask.scriptArguments }}
+
+- ${{ if not(eq(parameters.AzureAppPostDeployTemplate, '')) }}:
+  - template: ${{ parameters.AzureAppPostDeployTemplate }}

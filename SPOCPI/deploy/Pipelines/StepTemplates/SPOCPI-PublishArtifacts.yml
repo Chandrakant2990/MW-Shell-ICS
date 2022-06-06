@@ -1,0 +1,38 @@
+parameters:
+  SolutionFilesToArchieve: []
+  SolutionArtifactPublishTasks: []
+  SolutionDotnetPublishTasks: []
+
+steps:
+  - ${{ each publishTask in parameters.SolutionDotnetPublishTasks }}:
+    - task: DotNetCoreCLI@2
+      displayName: ${{ publishTask.displayName }}
+      condition: ${{ publishTask.condition }}
+      inputs:
+        command: 'publish'
+        publishWebProjects: ${{ publishTask.publishWebProjects }}
+        projects: ${{ publishTask.projects }}
+        arguments: ${{ publishTask.arguments }}
+        zipAfterPublish: ${{ publishTask.zipAfterPublish }}
+        modifyOutputPath: ${{ publishTask.modifyOutputPath }}
+
+  - ${{ each archiveTask in parameters.SolutionFilesToArchieve }}:
+    - task: ArchiveFiles@2
+      displayName: ${{ archiveTask.displayName }}
+      inputs:
+        rootFolderOrFile: ${{ archiveTask.rootFolderOrFile }}    
+        archiveType: 'zip'
+        includeRootFolder: false
+        archiveFile: ${{ archiveTask.archiveFile }}
+        replaceExistingArchive: true
+
+  - ${{ each publishTask in parameters.SolutionArtifactPublishTasks }}:
+    - task: PublishBuildArtifacts@1
+      displayName: ${{ publishTask.displayName }}
+      condition: ${{ publishTask.condition }}
+      inputs:
+        PathtoPublish: ${{ publishTask.PathtoPublish }}
+        ArtifactName: ${{ publishTask.ArtifactName }}
+        publishLocation: ${{ publishTask.publishLocation }}
+
+

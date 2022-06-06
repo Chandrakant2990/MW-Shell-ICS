@@ -1,0 +1,34 @@
+variables:
+  - name: "ServicesOrg"
+    value: 'servicescode'
+  - name: "OrganizationUri"
+    value: '$(System.TeamFoundationCollectionUri)'
+  - name: "SolutionName"
+    value: "IPKit - SharePoint Online Notification Hub"
+  - name: "BuildPlatform"
+    value: "Any CPU"
+  - name: "BuildConfiguration"
+    value: "Release"
+  - name : "ScanPSScripts"
+    value: true
+  - name : "DeploymentScriptsRoot"
+    value: "$(Build.SourcesDirectory)/deploy"
+  - name : "npm_config_cache"
+    value: $(Pipeline.Workspace)/.npm  
+
+  # SonarQube Region
+  - name: "ExecuteServicesSonar"
+    value: true
+  - name: "SonarQube"
+    value: "ServicesCODE-PROD"
+  - name: "projectKey"
+    value: "IPDitalWorkplace_LEDdev"
+  - name: "projectName"
+    value: "IPDitalWorkplace_IPKitSharePoint_LEDdev_#MW"
+  # SonarQube Region
+
+  - name: "SelfHostedPool"
+    value: true
+
+  - name: "TeamsDevelopmentMode"
+    value: false

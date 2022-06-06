@@ -1,0 +1,19 @@
+parameters:
+  SolutionType: ""  # ["NODE", "DOTNET"]
+  WorkingDirectory: '$(System.DefaultWorkingDirectory)/IntegrationTests'
+
+# Dummy Test Task, Replace this with the right parameters
+steps:
+  - task: VSTest@2
+    displayName: "Server Integration Tests"
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+          **\*.*test*.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+      searchFolder: ${{ parameters.WorkingDirectory }}
+      runTestsInIsolation: true
+      codeCoverageEnabled: true
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'

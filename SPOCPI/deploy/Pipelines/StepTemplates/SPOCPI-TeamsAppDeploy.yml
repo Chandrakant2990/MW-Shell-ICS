@@ -1,0 +1,90 @@
+parameters:
+  AzurePowerShellList: []
+  AzureCliList: []
+  ArtifactSource: 'current'
+  ArtifactName: 'SPFxAppBuildDrop'
+  PackageName: ''
+  TeamsPostDeployTemplate: ''
+
+steps:
+  - checkout: none
+  - ${{ if eq(parameters.ArtifactSource, 'current') }}:
+    - download: ${{ parameters.ArtifactSource }}
+      artifact: ${{ parameters.ArtifactName }}
+      patterns: |
+        **/*.sppkg 
+        **/*.zip
+
+  - ${{ if eq(parameters.ArtifactSource, 'specific') }}:
+    - download: ${{ parameters.ArtifactSource }}
+      artifact: ${{ parameters.ArtifactName }}
+      patterns: |
+        **/*.sppkg 
+        **/*.zip
+      project: # Required when source == Specific
+      pipeline: # Required when source == Specific
+      path: '$(Pipeline.Workspace)' 
+    
+  - script: sudo npm install --global @pnp/cli-microsoft365@3.1.0
+    displayName: Install Office365 CLI
+  - script: m365 login $(o365_tenant_app_catalog_site_url) --authType password --userName $(o365_user_login) --password $(o365_user_password)
+    displayName: Login to Office365
+  - script: |
+      CMD_GET_SPPKG_NAME=$(find $(Pipeline.Workspace)/${{parameters.ArtifactName}} -name ${{parameters.PackageName}} -exec basename {} \;)
+      echo "##vso[task.setvariable variable=SpPkgFileName;isOutput=true]${CMD_GET_SPPKG_NAME}"
+    displayName: Get generated *.sppkg filename
+    name: GetSharePointPackage
+  - script: m365 spo app add --filePath "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/sharepoint/solution/$(GetSharePointPackage.SpPkgFileName)" --overwrite
+    displayName: Upload SharePoint package to Site Collection App Catalog
+  - script: m365 spo app deploy --name $(GetSharePointPackage.SpPkgFileName) --skipFeatureDeployment
+    displayName: Deploy SharePoint package
+  - powershell: |
+      m365 login -t password -u $(o365_user_login) -p $(o365_user_password)
+
+      $apps = m365 teams app list -o json | ConvertFrom-Json
+      $app = $apps | Where-Object { $_.externalId -eq "$(spfx_webpart_id)"}
+      if ($app -eq $null) {
+        # install app
+        write-host Publishing package
+        m365 teams app publish -p $(Pipeline.Workspace)/${{parameters.ArtifactName}}/teams/PESelfServiceUI.zip --verbose --debug
+        write-host Package published
+      } else {
+        # update app
+        write-host Updating package
+        m365 teams app update -i $app.id -p $(Pipeline.Workspace)/${{parameters.ArtifactName}}/teams/PESelfServiceUI.zip --verbose --debug
+        write-host Package updated
+      }
+    displayName: 'PowerShell To publish app in MS Teams'
+  
+  - ${{ if eq(variables.TeamsDevelopmentMode, true) }}:
+    - powershell: |
+        m365 login -t password -u $(o365_user_login) -p $(o365_user_password)
+
+        m365 spo storageentity set --key ProvisioningUrl --value $(provisioning_api_url) -d 'Provisioning API Url' -u $(o365_tenant_app_catalog_site_url)
+        m365 spo storageentity set --key ApplicationId --value $(provisioning_web_appid) -d 'Provisioning Web ApplicationId' -u $(o365_tenant_app_catalog_site_url)
+
+        m365 spo storageentity list -u $(o365_tenant_app_catalog_site_url)
+      displayName: 'PowerShell To set tenant configuration properties'
+
+  - ${{ each powerShellTask in parameters.AzurePowerShellList }}:
+    - task: AzurePowerShell@5
+      displayName: ${{ powerShellTask.displayName }}
+      inputs:
+        ConnectedServiceNameARM: ${{ powerShellTask.azureResourceManagerConnection}}
+        ScriptPath: ${{ powerShellTask.ScriptPath }}
+        ScriptArguments: ${{ powerShellTask.ScriptArguments}}
+        TargetAzurePs: LatestVersion 
+
+  - ${{ each cliTask in parameters.AzureCliList }}:
+    - task: AzureCLI@2
+      displayName: ${{ cliTask.displayName }}
+      inputs:
+        azureSubscription: ${{ cliTask.azureSubscription }}
+        addSpnToEnvironment: ${{ cliTask.addSpnToEnvironment }}
+        scriptType: ${{ cliTask.scriptType }}
+        scriptLocation: ${{ cliTask.scriptLocation }}
+        scriptPath: ${{ cliTask.scriptPath }}
+        scriptArguments: ${{ cliTask.scriptArguments }}
+
+  - ${{ if not(eq(parameters.TeamsPostDeployTemplate, '')) }}:
+    - template: ${{ parameters.TeamsPostDeployTemplate }}

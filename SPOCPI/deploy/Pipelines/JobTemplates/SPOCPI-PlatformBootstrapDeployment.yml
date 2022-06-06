@@ -1,0 +1,58 @@
+parameters:
+  DeployInfra: true
+  M365TenantConfigJobs: []
+  AzureServicesDeploymentJobs: []
+  AzureServicesPostDeployTemplate: ''
+  M365TenantConfigPostDeployTemplate: ''
+
+jobs:
+  - ${{ if eq(parameters.DeployInfra, true) }}:
+
+    - ${{ each deployJob in parameters.M365TenantConfigJobs }}:
+      - deployment: ${{ deployJob.JobName }}
+        displayName: ${{ deployJob.displayName }}
+        dependsOn: ${{ deployJob.dependsOn }}
+        pool:
+          vmImage: ${{ deployJob.vmImage }}
+        environment: ${{ deployJob.target_environment }}
+        variables:
+        - group: ${{deployJob.variable_group_name}}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-M365TenantConfig.yml"
+                  parameters:
+                    SecureFileList: ${{ deployJob.SecureFileList }}
+                    AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
+                    AzureCliList: ${{ deployJob.AzureCliList }}
+                    ArtifactSource: ${{ deployJob.ArtifactSource }}
+                    ArtifactName: ${{ deployJob.ArtifactName }}
+                    ArtifactPatterns: ${{ deployJob.ArtifactPatterns }}
+                    M365TenantConfigPostDeployTemplate: ${{ parameters.M365TenantConfigPostDeployTemplate }}
+
+
+    - ${{ each deployJob in parameters.AzureServicesDeploymentJobs }}:
+
+      - deployment: ${{ deployJob.JobName }}
+        displayName: ${{ deployJob.displayName }}
+        dependsOn: ${{ deployJob.dependsOn }}
+        pool:
+          vmImage: ${{ deployJob.vmImage }}
+        environment: ${{ deployJob.target_environment }}
+        variables:
+        - group: ${{deployJob.variable_group_name}}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-DeployAzureServices.yml"
+                  parameters:
+                    SecureFileList: ${{ deployJob.SecureFileList }}
+                    AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
+                    AzureCliList: ${{ deployJob.AzureCliList }}
+                    ARMDeployList: ${{ deployJob.ARMDeployList }}
+                    ArtifactSource: ${{ deployJob.ArtifactSource }}
+                    ArtifactName: ${{ deployJob.ArtifactName }}
+                    ArtifactPatterns: ${{ deployJob.ArtifactPatterns }}
+                    AzureServicesPostDeployTemplate: ${{ parameters.AzureServicesPostDeployTemplate }}

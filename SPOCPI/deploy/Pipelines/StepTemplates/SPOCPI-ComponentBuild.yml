@@ -1,0 +1,29 @@
+parameters:
+  ExecuteStaticCodeAnalysis: false
+  SolutionType: ""  # ["NODE", "DOTNET"]
+  SolutionBuildList: []
+  SolutionFilesToCopy: []
+  WorkingDirectory: ""
+  NodeVersion: 10.x
+  NpmCustomCommand: ""
+
+steps:
+  - ${{ if eq(parameters.SolutionType, 'DOTNET') }}:
+
+    - ${{ if eq(parameters.ExecuteStaticCodeAnalysis, 'false') }}:
+
+      - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-ComponentBuild_DotNet.yml"
+        parameters:
+          ExecuteStaticCodeAnalysis: ${{ parameters.ExecuteStaticCodeAnalysis }}
+          SolutionBuildList: ${{ parameters.SolutionBuildList }}
+          SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}
+
+  - ${{ if eq(parameters.SolutionType, 'NODE') }}:
+
+    - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-ComponentBuild_Node.yml"
+      parameters:
+        NodeVersion: ${{ parameters.NodeVersion }}
+        SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}
+        WorkingDirectory: ${{ parameters.WorkingDirectory }}
+        NpmCustomCommand: ${{ parameters.NpmCustomCommand }}
+ 

@@ -1,0 +1,102 @@
+parameters:
+  DeployInfra: true
+  DeployAppArtifacts: true
+  SPFxDeploymentJobs: []
+  AzureAppDeploymentJobs: []
+  TeamsAppDeploymentJobs: []
+  AzureAppPostDeployTemplate: ''
+  SPFxPostDeployTemplate: ''
+  TeamsPostDeployTemplate: ''
+
+jobs:
+  - ${{ if eq(parameters.DeployAppArtifacts, true) }}:
+
+    - ${{ each deployJob in parameters.AzureAppDeploymentJobs }}:
+
+      - deployment: ${{ deployJob.JobName }}
+        displayName: ${{ deployJob.displayName }}
+
+        ${{ if eq(parameters.DeployInfra, true) }}:
+          dependsOn: ${{ deployJob.dependsOn }}
+
+        ${{ if ne(parameters.DeployInfra, true) }}:
+          dependsOn: []
+        
+        pool:
+          vmImage: ${{ deployJob.vmImage }}
+        environment: ${{ deployJob.target_environment }}
+        variables:
+        - group: ${{deployJob.variable_group_name}}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-AzureAppDeploy.yml"
+                  parameters:
+                    AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
+                    AzureCliList: ${{ deployJob.AzureCliList }}
+                    WebAppDeployList: ${{ deployJob.WebAppDeployList }}
+                    ArtifactSource: ${{ deployJob.ArtifactSource }}
+                    ArtifactName: ${{ deployJob.ArtifactName }}
+                    ArtifactPatterns: ${{ deployJob.ArtifactPatterns }}
+                    AzureAppPostDeployTemplate: ${{ parameters.AzureAppPostDeployTemplate }}
+    
+    - ${{ each deployJob in parameters.SPFxDeploymentJobs }}:
+
+      - deployment: ${{ deployJob.JobName }}
+        displayName: ${{ deployJob.displayName }}
+
+        ${{ if eq(parameters.DeployInfra, true) }}:
+          dependsOn: ${{ deployJob.dependsOn }}
+
+        ${{ if ne(parameters.DeployInfra, true) }}:
+          dependsOn: []
+         
+        pool:
+          vmImage: ${{ deployJob.vmImage }}
+        environment: ${{ deployJob.target_environment }}
+        variables:
+        - group: ${{deployJob.variable_group_name}} #o365_user_login, o365_user_password, o365_app_catalog_site_url, o365cli_app_catalog_scope
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-SPFxAppDeploy.yml"
+                  parameters:
+                    AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
+                    AzureCliList: ${{ deployJob.AzureCliList }}
+                    ArtifactSource: ${{ deployJob.ArtifactSource }}
+                    ArtifactName: ${{ deployJob.ArtifactName }}
+                    ArtifactPatterns: ${{ deployJob.ArtifactPatterns }}
+                    PackageName: ${{ deployJob.PackageName }}
+                    SPFxPostDeployTemplate: ${{ parameters.SPFxPostDeployTemplate }}
+
+    - ${{ each deployJob in parameters.TeamsAppDeploymentJobs }}:
+
+      - deployment: ${{ deployJob.JobName }}
+        displayName: ${{ deployJob.displayName }} 
+        
+        ${{ if eq(parameters.DeployInfra, true) }}:
+          dependsOn: ${{ deployJob.dependsOn }}
+
+        ${{ if ne(parameters.DeployInfra, true) }}:
+          dependsOn: []
+        
+        pool:
+          vmImage: ${{ deployJob.vmImage }}
+        environment: ${{ deployJob.target_environment }}
+        variables:
+        - group: ${{deployJob.variable_group_name}} #o365_user_login, o365_user_password, o365_tenant_app_catalog_site_url, spfx_webpart_id
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-TeamsAppDeploy.yml"
+                  parameters:
+                    AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
+                    AzureCliList: ${{ deployJob.AzureCliList }}
+                    ArtifactSource: ${{ deployJob.ArtifactSource }}
+                    ArtifactName: ${{ deployJob.ArtifactName }}
+                    ArtifactPatterns: ${{ deployJob.ArtifactPatterns }}
+                    PackageName: ${{ deployJob.PackageName }}
+                    TeamsPostDeployTemplate: ${{ parameters.TeamsPostDeployTemplate }}

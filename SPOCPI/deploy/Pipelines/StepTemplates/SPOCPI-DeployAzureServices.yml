@@ -1,0 +1,75 @@
+parameters:
+  SecureFileList: []
+  AzurePowerShellList: []
+  ARMDeployList: []
+  AzureCliList: []
+  ArtifactSource: 'current'
+  ArtifactName: 'AzureServicesBuildDrop'
+  ArtifactPatterns: '**/deployResourcesDEV.json'
+  AzureServicesPostDeployTemplate: ''
+
+steps:
+  - checkout: none
+  
+  # Downloading ARM template file to use for Az deployment task
+  - ${{ if eq(parameters.ArtifactSource, 'current') }}:
+    - download: ${{ parameters.ArtifactSource }}
+      artifact: ${{ parameters.ArtifactName }}
+      patterns: ${{ parameters.ArtifactPatterns }}
+
+  - ${{ if eq(parameters.ArtifactSource, 'specific') }}:
+    - download: ${{ parameters.ArtifactSource }}
+      artifact: ${{ parameters.ArtifactName }}
+      patterns: ${{ parameters.ArtifactPatterns }}
+      project: # Required when source == Specific
+      pipeline: # Required when source == Specific
+      path: '$(Pipeline.Workspace)'
+
+  # Download any Certificates
+  - ${{ each secureFile in parameters.SecureFileList }}:
+    - task: DownloadSecureFile@1
+      name: ${{ secureFile.name }}
+      displayName: ${{ secureFile.displayName }}
+      inputs:
+        secureFile: ${{ secureFile.fileName }}
+
+  - ${{ each powerShellTask in parameters.AzurePowerShellList }}:
+
+    - task: AzurePowerShell@5
+      displayName: ${{ powerShellTask.displayName }}
+      inputs:
+        ConnectedServiceNameARM: ${{ powerShellTask.azureResourceManagerConnection}}
+        ScriptPath: ${{ powerShellTask.ScriptPath }}
+        ScriptArguments: ${{ powerShellTask.ScriptArguments}}
+        TargetAzurePs: LatestVersion    
+
+  - ${{ each deployJob in parameters.ARMDeployList }}:
+
+    # To deploy Az resources using ARM template.
+    - task: AzureResourceManagerTemplateDeployment@3  
+      inputs:
+        deploymentScope: ${{ deployJob.deploymentScope }}
+        azureResourceManagerConnection: ${{ deployJob.azureResourceManagerConnection }}
+        subscriptionId: ${{ deployJob.subscriptionId }}
+        action: ${{ deployJob.action }}
+        resourceGroupName: ${{ deployJob.resourceGroupName }}
+        location: ${{ deployJob.location }}
+        templateLocation: ${{ deployJob.templateLocation }}
+        csmFile: ${{ deployJob.csmFile }}
+        csmParametersFile: ${{ deployJob.csmParametersFile }}
+        deploymentMode: ${{ deployJob.deploymentMode }}
+        overrideParameters: ${{ deployJob.overrideParameters }}
+
+  - ${{ each cliTask in parameters.AzureCliList }}:
+    - task: AzureCLI@2
+      displayName: ${{ cliTask.displayName }}
+      inputs:
+        azureSubscription: ${{ cliTask.azureSubscription }}
+        addSpnToEnvironment: ${{ cliTask.addSpnToEnvironment }}
+        scriptType: ${{ cliTask.scriptType }}
+        scriptLocation: ${{ cliTask.scriptLocation }}
+        scriptPath: ${{ cliTask.scriptPath }}
+        scriptArguments: ${{ cliTask.scriptArguments }}
+
+  - ${{ if not(eq(parameters.AzureServicesPostDeployTemplate, '')) }}:
+    - template: ${{ parameters.AzureServicesPostDeployTemplate }}

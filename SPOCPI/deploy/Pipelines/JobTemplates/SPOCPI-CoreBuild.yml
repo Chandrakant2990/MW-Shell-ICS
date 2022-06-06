@@ -1,0 +1,67 @@
+parameters:
+  JobName: ""
+  displayName: ""
+  dependsOn: []
+  vmImage: ""
+  OS: ""
+  ExecuteStaticCodeAnalysis: true
+  ExecuteUnitTests: true
+  SolutionType: ""  # ["NODE", "DOTNET"]
+  SolutionBuildList: []
+  SolutionFilesToCopy: []
+  WorkingDirectory: ""
+  NodeVersion: 10.x
+  NpmCustomCommand: ""
+  SolutionFilesToArchieve: []
+  SolutionArtifactPublishTasks: []
+  SolutionDotnetPublishTasks: []
+
+jobs:
+  - job: ${{ parameters.JobName }}
+    displayName: ${{ parameters.displayName }}
+    dependsOn: ${{ parameters.dependsOn }}
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+
+    workspace:
+      clean: all # outputs | resources | all what to clean up before the job runs
+
+    steps:
+      # START StaticCodeAnalysis Region
+      - ${{ if eq(parameters.ExecuteStaticCodeAnalysis, 'true') }}:
+                 
+        - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-StaticCodeAnalysis.yml"
+          parameters:
+            toolset: ${{ parameters.toolset }}
+            SolutionBuildList: ${{ parameters.SolutionBuildList }}
+            SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}
+      # END StaticCodeAnalysis Region
+
+      # START ComponentBuild Region
+      - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-ComponentBuild.yml"
+        parameters:
+          toolset: ${{ parameters.toolset }}
+          ExecuteStaticCodeAnalysis: ${{ parameters.ExecuteStaticCodeAnalysis }}
+          SolutionType: ${{ parameters.SolutionType }}
+          SolutionBuildList: ${{ parameters.SolutionBuildList }}
+          SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}
+          WorkingDirectory: ${{ parameters.WorkingDirectory }}
+          NodeVersion: ${{ parameters.NodeVersion }}
+          NpmCustomCommand: ${{ parameters.NpmCustomCommand }}
+      # END ComponentBuild Region
+          
+      # START UnitTest Region
+      - ${{ if eq(parameters.ExecuteUnitTests, 'true') }}:
+        - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-UnitTests.yml" 
+          parameters:
+            SolutionType: ${{ parameters.SolutionType }}
+            WorkingDirectory: ${{ parameters.WorkingDirectory }}
+      # END UnitTest Region
+
+      # START PublishArtifacts Region
+      - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-PublishArtifacts.yml"
+        parameters:           
+          SolutionFilesToArchieve: ${{ parameters.SolutionFilesToArchieve }}
+          SolutionArtifactPublishTasks: ${{ parameters.SolutionArtifactPublishTasks }}
+          SolutionDotnetPublishTasks: ${{ parameters.SolutionDotnetPublishTasks }}
+      # END PublishArtifacts Region

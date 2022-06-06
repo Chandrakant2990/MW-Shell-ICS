@@ -1,0 +1,61 @@
+parameters:
+  AzurePowerShellList: []
+  AzureCliList: []
+  ArtifactSource: 'current'
+  ArtifactName: 'SPFxAppBuildDrop'
+  ArtifactPatterns: '**/*.sppkg'
+  PackageName: ''
+  SPFxPostDeployTemplate: ''
+
+steps:
+  - checkout: none
+  - ${{ if eq(parameters.ArtifactSource, 'current') }}:
+    - download: ${{ parameters.ArtifactSource }}
+      artifact: ${{ parameters.ArtifactName }}
+      patterns: ${{ parameters.ArtifactPatterns }}
+
+  - ${{ if eq(parameters.ArtifactSource, 'specific') }}:
+    - download: ${{ parameters.ArtifactSource }}
+      artifact: ${{ parameters.ArtifactName }}
+      patterns: ${{ parameters.ArtifactPatterns }}
+      project: # Required when source == Specific
+      pipeline: # Required when source == Specific
+      path: '$(Pipeline.Workspace)' 
+
+  - script: sudo npm install --global @pnp/cli-microsoft365@3.1.0
+    displayName: Install Office365 CLI
+  - script: m365 login $(o365_app_catalog_site_url) --authType password --userName $(o365_user_login) --password $(o365_user_password)
+    displayName: Login to Office365
+  - script: |
+      CMD_GET_SPPKG_NAME=$(find $(Pipeline.Workspace)/${{parameters.ArtifactName}} -name ${{parameters.PackageName}} -exec basename {} \;)
+      echo "##vso[task.setvariable variable=SpPkgFileName;isOutput=true]${CMD_GET_SPPKG_NAME}"
+    displayName: Get generated *.sppkg filename
+    name: GetSharePointPackage
+  - script: m365 spo app add --filePath "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/sharepoint/solution/$(GetSharePointPackage.SpPkgFileName)" --appCatalogUrl $(o365_app_catalog_site_url) --scope $(o365cli_app_catalog_scope) --overwrite
+    displayName: Upload SharePoint package to Site Collection App Catalog
+  - script: m365 spo app deploy --name $(GetSharePointPackage.SpPkgFileName) --appCatalogUrl $(o365_app_catalog_site_url) --scope $(o365cli_app_catalog_scope)
+    displayName: Deploy SharePoint package
+
+  - ${{ each powerShellTask in parameters.AzurePowerShellList }}:
+    - task: AzurePowerShell@5
+      displayName: ${{ powerShellTask.displayName }}
+      inputs:
+        ConnectedServiceNameARM: ${{ powerShellTask.azureResourceManagerConnection}}
+        ScriptPath: ${{ powerShellTask.ScriptPath }}
+        ScriptArguments: ${{ powerShellTask.ScriptArguments}}
+        TargetAzurePs: LatestVersion 
+
+  - ${{ each cliTask in parameters.AzureCliList }}:
+    - task: AzureCLI@2
+      displayName: ${{ cliTask.displayName }}
+      inputs:
+        azureSubscription: ${{ cliTask.azureSubscription }}
+        addSpnToEnvironment: ${{ cliTask.addSpnToEnvironment }}
+        scriptType: ${{ cliTask.scriptType }}
+        scriptLocation: ${{ cliTask.scriptLocation }}
+        scriptPath: ${{ cliTask.scriptPath }}
+        scriptArguments: ${{ cliTask.scriptArguments }}
+
+  - ${{ if not(eq(parameters.SPFxPostDeployTemplate, '')) }}:
+    - template: ${{ parameters.SPFxPostDeployTemplate }}
+
