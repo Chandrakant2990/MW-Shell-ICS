@@ -12,7 +12,7 @@ steps:
 
     - ${{ if eq(parameters.ExecuteStaticCodeAnalysis, 'false') }}:
 
-      - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-ComponentBuild_DotNet.yml"
+      - template: "/deploy/Pipelines/StepTemplates/SPOCPI-ComponentBuild_DotNet.yml"
         parameters:
           ExecuteStaticCodeAnalysis: ${{ parameters.ExecuteStaticCodeAnalysis }}
           SolutionBuildList: ${{ parameters.SolutionBuildList }}
@@ -20,7 +20,7 @@ steps:
 
   - ${{ if eq(parameters.SolutionType, 'NODE') }}:
 
-    - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-ComponentBuild_Node.yml"
+    - template: "/deploy/Pipelines/StepTemplates/SPOCPI-ComponentBuild_Node.yml"
       parameters:
         NodeVersion: ${{ parameters.NodeVersion }}
         SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}

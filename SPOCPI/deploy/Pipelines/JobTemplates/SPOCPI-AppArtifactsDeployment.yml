@@ -31,7 +31,7 @@ jobs:
           runOnce:
             deploy:
               steps:
-                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-AzureAppDeploy.yml"
+                - template: "/deploy/Pipelines/StepTemplates/SPOCPI-AzureAppDeploy.yml"
                   parameters:
                     AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
                     AzureCliList: ${{ deployJob.AzureCliList }}
@@ -61,7 +61,7 @@ jobs:
           runOnce:
             deploy:
               steps:
-                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-SPFxAppDeploy.yml"
+                - template: "/deploy/Pipelines/StepTemplates/SPOCPI-SPFxAppDeploy.yml"
                   parameters:
                     AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
                     AzureCliList: ${{ deployJob.AzureCliList }}
@@ -91,7 +91,7 @@ jobs:
           runOnce:
             deploy:
               steps:
-                - template: "/deploy/Pipelines/StepTemplates/MWT-SPONH-TeamsAppDeploy.yml"
+                - template: "/deploy/Pipelines/StepTemplates/SPOCPI-TeamsAppDeploy.yml"
                   parameters:
                     AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
                     AzureCliList: ${{ deployJob.AzureCliList }}
