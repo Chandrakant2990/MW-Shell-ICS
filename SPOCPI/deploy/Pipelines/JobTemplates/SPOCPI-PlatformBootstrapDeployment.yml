@@ -21,7 +21,7 @@ jobs:
           runOnce:
             deploy:
               steps:
-                - template: "/deploy/Pipelines/StepTemplates/SPOCPI-M365TenantConfig.yml"
+                - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-M365TenantConfig.yml"
                   parameters:
                     SecureFileList: ${{ deployJob.SecureFileList }}
                     AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}
@@ -46,7 +46,7 @@ jobs:
           runOnce:
             deploy:
               steps:
-                - template: "/deploy/Pipelines/StepTemplates/SPOCPI-DeployAzureServices.yml"
+                - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-DeployAzureServices.yml"
                   parameters:
                     SecureFileList: ${{ deployJob.SecureFileList }}
                     AzurePowerShellList: ${{ deployJob.AzurePowerShellList }}

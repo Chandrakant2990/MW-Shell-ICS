@@ -20,7 +20,7 @@ stages:
     displayName: "Deployment : ${{ parameters.StageName }}"
     dependsOn: Build
     jobs:
-      - template: "/deploy/Pipelines/JobTemplates/SPOCPI-PlatformBootstrapDeployment.yml"
+      - template: "/SPOCPI/deploy/Pipelines/JobTemplates/SPOCPI-PlatformBootstrapDeployment.yml"
         parameters:
           DeployInfra: ${{ parameters.DeployInfra }}
           M365TenantConfigJobs: ${{ parameters.M365TenantConfigJobs }}
@@ -28,7 +28,7 @@ stages:
           AzureServicesPostDeployTemplate: ${{ parameters.AzureServicesPostDeployTemplate }}
           M365TenantConfigPostDeployTemplate: ${{ parameters.M365TenantConfigPostDeployTemplate }}
 
-      - template: "/deploy/Pipelines/JobTemplates/SPOCPI-AppArtifactsDeployment.yml"
+      - template: "/SPOCPI/deploy/Pipelines/JobTemplates/SPOCPI-AppArtifactsDeployment.yml"
         parameters:
           DeployInfra: ${{ parameters.DeployInfra }}
           DeployAppArtifacts: ${{ parameters.DeployAppArtifacts }}
@@ -39,7 +39,7 @@ stages:
           SPFxPostDeployTemplate: ${{ parameters.SPFxPostDeployTemplate }}
           TeamsPostDeployTemplate: ${{ parameters.TeamsPostDeployTemplate }}
 
-      - template: "/deploy/Pipelines/JobTemplates/SPOCPI-ReleaseValidation.yml"
+      - template: "/SPOCPI/deploy/Pipelines/JobTemplates/SPOCPI-ReleaseValidation.yml"
         parameters:
           DeployAppArtifacts: ${{ parameters.DeployAppArtifacts }}
           RunValidation: ${{ parameters.RunValidation }}

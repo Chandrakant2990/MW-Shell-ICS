@@ -30,7 +30,7 @@ jobs:
       # START StaticCodeAnalysis Region
       - ${{ if eq(parameters.ExecuteStaticCodeAnalysis, 'true') }}:
                  
-        - template: "/deploy/Pipelines/StepTemplates/SPOCPI-StaticCodeAnalysis.yml"
+        - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-StaticCodeAnalysis.yml"
           parameters:
             toolset: ${{ parameters.toolset }}
             SolutionBuildList: ${{ parameters.SolutionBuildList }}
@@ -38,7 +38,7 @@ jobs:
       # END StaticCodeAnalysis Region
 
       # START ComponentBuild Region
-      - template: "/deploy/Pipelines/StepTemplates/SPOCPI-ComponentBuild.yml"
+      - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-ComponentBuild.yml"
         parameters:
           toolset: ${{ parameters.toolset }}
           ExecuteStaticCodeAnalysis: ${{ parameters.ExecuteStaticCodeAnalysis }}
@@ -52,14 +52,14 @@ jobs:
           
       # START UnitTest Region
       - ${{ if eq(parameters.ExecuteUnitTests, 'true') }}:
-        - template: "/deploy/Pipelines/StepTemplates/SPOCPI-UnitTests.yml" 
+        - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-UnitTests.yml" 
           parameters:
             SolutionType: ${{ parameters.SolutionType }}
             WorkingDirectory: ${{ parameters.WorkingDirectory }}
       # END UnitTest Region
 
       # START PublishArtifacts Region
-      - template: "/deploy/Pipelines/StepTemplates/SPOCPI-PublishArtifacts.yml"
+      - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-PublishArtifacts.yml"
         parameters:           
           SolutionFilesToArchieve: ${{ parameters.SolutionFilesToArchieve }}
           SolutionArtifactPublishTasks: ${{ parameters.SolutionArtifactPublishTasks }}

@@ -28,7 +28,7 @@ steps:
         SONAR_SCANNER_OPTS=-Xmx2048m
         sonar.verbose=true
 
-  - template: "/deploy/Pipelines/StepTemplates/SPOCPI-ComponentBuild_DotNet.yml"
+  - template: "/SPOCPI/deploy/Pipelines/StepTemplates/SPOCPI-ComponentBuild_DotNet.yml"
     parameters:
       toolset: ${{ parameters.toolset }}
       SolutionBuildList: ${{ parameters.SolutionBuildList }}
