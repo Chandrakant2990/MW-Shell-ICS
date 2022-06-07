@@ -77,30 +77,51 @@ stages:
               "displayName": 'Build WebHooks UI App',
               "toolset": "dotnetcli",
               "condition": "succeeded()",
-              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.WebHooksUI.csproj',
+              "solution": '**/Shell.SPOCPI.WebHooksManager.UI.csproj',
               "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
             },
             {
               "displayName": 'Build Notification Receiver Function App',
               "toolset": "dotnetcli",
               "condition": "succeeded()",
-              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.NotificationReceiverFunctionApp.csproj',
+              "solution": '**/Shell.SPOCPI.NotificationReceiver.FunctionApp.csproj',
               "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
             },
             {
               "displayName": 'Build Change Processor Function App',
               "toolset": "dotnetcli",
               "condition": "succeeded()",
-              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorFunctionApp.csproj',
+              "solution": '**/Shell.SPOCPI.ChangeProcessor.FunctionApp.csproj',
               "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
             },
             {
               "displayName": 'Build Populate Tracking Function App',
               "toolset": "dotnetcli",
               "condition": "succeeded()",
-              "solution": '**/Microsoft.Consulting.SPO.NotificationHub.PopulateTrackingFunctionApp.csproj',
+              "solution": '**/Shell.SPOCPI.PopulateTracking.FunctionApp.csproj',
               "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
-            }
+            },
+            {
+              "displayName": 'Build Change Procssor WebJob',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Shell.SPOCPI.ChangeProcessor.WebJob.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            },
+            {
+              "displayName": 'Build Webhooks manager WebJob',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Shell.SPOCPI.WebHooksManager.WebJob.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            },
+            {
+              "displayName": 'Build Refresh Delta Token WebJob ',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Shell.SPOCPI.RefreshDeltaToken.WebJob.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            },
           ],
           SolutionFilesToCopy: [
             {
@@ -115,32 +136,37 @@ stages:
             {
               "displayName": 'Archive WebHooks UI App',
               "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
-              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.WebHooksUI.zip'
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.WebHooksManager.UI.zip'
             },
             {
               "displayName": 'Archive Notification Receiver Function App',
               "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
-              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.NotificationReceiverFunctionApp.zip'
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.NotificationReceiver.FunctionApp.zip'
             },
             {
               "displayName": 'Archive Change Processor Function App',
               "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
-              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorFunctionApp.zip'
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.ChangeProcessor.FunctionApp.zip'
             },
             {
               "displayName": 'Archive Populate Tracking Function App',
               "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
-              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.PopulateTrackingFunctionApp.zip'
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.PopulateTracking.FunctionApp.zip'
             },
             {
               "displayName": 'Archive WebHooks WebJob',
               "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/WebHooksWebJob',
-              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.WebHooksWebJob.zip'
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.WebHooksManager.WebJob.zip'
             },
             {
               "displayName": 'Archive Change Processor WebJob',
               "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob',
-              "archiveFile": '$(Build.ArtifactStagingDirectory)/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorWebJob.zip'
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.ChangeProcessor.WebJob.zip'
+            },
+            {
+              "displayName": 'Archive Refresh Delta Token WebJob',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.RefreshDeltaToken.WebJob.zip'
             }
           ],
           SolutionArtifactPublishTasks: [
@@ -157,7 +183,7 @@ stages:
               "displayName": 'Publish WebHooks WebJob',
               "condition": "succeeded()",
               "publishWebProjects": false,
-              "projects": '**/Microsoft.Consulting.SPO.NotificationHub.WebHooksWebJob.csproj',
+              "projects": '**/Shell.SPOCPI.WebHooksManager.WebJob.csproj',
               "arguments": '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/WebHooksWebJob"',
               "zipAfterPublish": false,
               "modifyOutputPath": false
@@ -166,7 +192,7 @@ stages:
               "displayName": 'Publish Change Processor WebJob',
               "condition": "succeeded()",
               "publishWebProjects": false,
-              "projects": '**/Microsoft.Consulting.SPO.NotificationHub.ChangeProcessorWebJob.csproj',
+              "projects": '**/Shell.SPOCPI.ChangeProcessor.WebJob.csproj',
               "arguments": '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob"',
               "zipAfterPublish": false,
               "modifyOutputPath": false
