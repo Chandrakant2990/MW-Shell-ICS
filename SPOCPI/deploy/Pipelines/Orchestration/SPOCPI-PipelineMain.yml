@@ -122,6 +122,13 @@ stages:
               "solution": '**/Shell.SPOCPI.RefreshDeltaToken.WebJob.csproj',
               "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
             },
+            {
+              "displayName": 'Build Shell SPOCPI Common ',
+              "toolset": "dotnetcli",
+              "condition": "succeeded()",
+              "solution": '**/Shell.SPOCPI.Common.csproj',
+              "buildArgs": '--output $(Build.BinariesDirectory)/publish_output --configuration $(BuildConfiguration)'
+            }
           ],
           SolutionFilesToCopy: [
             {
@@ -165,8 +172,13 @@ stages:
             },
             {
               "displayName": 'Archive Refresh Delta Token WebJob',
-              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/RefreshDeltaTokenWebJob',
               "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.RefreshDeltaToken.WebJob.zip'
+            },
+            {
+              "displayName": 'Archive Shell SPOCPI Common',
+              "rootFolderOrFile": '$(Build.BinariesDirectory)/publish_output',
+              "archiveFile": '$(Build.ArtifactStagingDirectory)/Shell.SPOCPI.Common.zip'
             }
           ],
           SolutionArtifactPublishTasks: [
@@ -194,6 +206,15 @@ stages:
               "publishWebProjects": false,
               "projects": '**/Shell.SPOCPI.ChangeProcessor.WebJob.csproj',
               "arguments": '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/ChangeProcessorWebJob"',
+              "zipAfterPublish": false,
+              "modifyOutputPath": false
+            },
+            {
+              "displayName": 'Publish Refresh Delta Token WebJob',
+              "condition": "succeeded()",
+              "publishWebProjects": false,
+              "projects": '**/Shell.SPOCPI.RefreshDeltaToken.WebJob.csproj',
+              "arguments": '--configuration "$(BuildConfiguration)" --output "$(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/RefreshDeltaTokenWebJob"',
               "zipAfterPublish": false,
               "modifyOutputPath": false
             }
