@@ -1,10 +1,10 @@
 variables:
   - name: "ServicesOrg"
-    value: 'servicescode'
+    value: 'Shell-MicrosoftSearchAndKnowledge'
   - name: "OrganizationUri"
     value: '$(System.TeamFoundationCollectionUri)'
   - name: "SolutionName"
-    value: "IPKit - SharePoint Online Notification Hub"
+    value: "Shell.SPOCPI"
   - name: "BuildPlatform"
     value: "Any CPU"
   - name: "BuildConfiguration"
@@ -18,7 +18,7 @@ variables:
 
   # SonarQube Region
   - name: "ExecuteServicesSonar"
-    value: true
+    value: false
   - name: "SonarQube"
     value: "ServicesCODE-PROD"
   - name: "projectKey"
