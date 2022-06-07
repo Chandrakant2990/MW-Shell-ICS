@@ -10,7 +10,7 @@ steps:
   - task: NuGetCommand@2
     displayName: 'Nuget Restore'
     inputs:
-      restoreSolution: '**\*.sln'
+      restoreSolution: '**\Shell.SPOCPI.sln'
       packagesdirectory: '..\packages'
 
   - ${{ each buildTask in parameters.SolutionBuildList }}:
