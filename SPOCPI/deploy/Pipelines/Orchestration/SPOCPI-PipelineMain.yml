@@ -52,7 +52,7 @@ stages:
           condition: or(startswith('${{ item.key }}', 'Deploy'), startswith('${{ item.key }}', 'Run'))
 
   # Core Build Stage
-  - template: "/deploy/Pipelines/StageTemplates/SPOCPI-Build.yml"
+  - template: "/SPOCPI/deploy/Pipelines/StageTemplates/SPOCPI-Build.yml"
     parameters:
       BuildList: [
         {
