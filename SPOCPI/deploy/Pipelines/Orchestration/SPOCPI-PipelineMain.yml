@@ -70,7 +70,7 @@ stages:
               "displayName": "Build Solution",
               "toolset": "vsbuild",
               "condition": "succeeded()",
-              "solution": '**/*.sln',
+              "solution": '**/Shell.SPOCPI.sln',
               "buildArgs": '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)"'
             },
             {
