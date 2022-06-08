@@ -133,7 +133,7 @@ stages:
           SolutionFilesToCopy: [
             {
               "displayName": "Copy Deploy Files",
-              "SourceFolder": "C:/SHELL ICS/SPOCPI/deploy",
+              "SourceFolder": "$(Build.BinariesDirectory)/publish_output/deploy",
               "TargetFolder": "$(Build.ArtifactStagingDirectory)"
             }
           ],
