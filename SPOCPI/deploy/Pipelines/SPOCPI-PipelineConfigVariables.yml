@@ -12,7 +12,7 @@ variables:
   - name : "ScanPSScripts"
     value: true
   - name : "DeploymentScriptsRoot"
-    value: "$(Build.SourcesDirectory)/deploy"
+    value: "$(Build.SourcesDirectory)"
   - name : "npm_config_cache"
     value: $(Pipeline.Workspace)/.npm  
 
