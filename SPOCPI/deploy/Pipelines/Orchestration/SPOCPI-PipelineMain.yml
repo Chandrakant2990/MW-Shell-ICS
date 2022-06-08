@@ -133,7 +133,7 @@ stages:
           SolutionFilesToCopy: [
             {
               "displayName": "Copy Deploy Files",
-              "SourceFolder": "$(DeploymentScriptsRoot)",
+              "SourceFolder": "$(Build.SourcesDirectory)",
               "TargetFolder": "$(Build.ArtifactStagingDirectory)"
             }
           ],

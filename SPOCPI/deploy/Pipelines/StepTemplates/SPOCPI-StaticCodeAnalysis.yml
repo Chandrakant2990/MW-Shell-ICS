@@ -11,17 +11,17 @@ steps:
       SolutionBuildList: ${{ parameters.SolutionBuildList }}
       SolutionFilesToCopy: ${{ parameters.SolutionFilesToCopy }}
 
-  - task: SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@4
-    displayName: 'Run Code Analysis'
-    condition: eq(variables.ExecuteServicesSonar, true)
+  - task: #SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@4
+    displayName: #'Run Code Analysis'
+    condition: #eq(variables.ExecuteServicesSonar, true)
     
-  - task: EnterpriseServicesDevOpsTeam.BuildTool-Tasks.task-ServicesDevopsRemoveFromNSG.ServicesDevOpsSonarPreReqComplete@6
-    displayName: 'T-ServicesDevOpsSonarPreReqComplete:'
+  - task: #EnterpriseServicesDevOpsTeam.BuildTool-Tasks.task-ServicesDevopsRemoveFromNSG.ServicesDevOpsSonarPreReqComplete@6
+    displayName: #'T-ServicesDevOpsSonarPreReqComplete:'
 
-  - task: RoslynAnalyzers@2
-    displayName: "Run Roslyn Analyzers"      
+  - task: #RoslynAnalyzers@2
+    displayName: #"Run Roslyn Analyzers"      
     inputs:
-      userProvideBuildInfo: 'auto'
+      userProvideBuildInfo: #'auto'
 
   - task: PSScriptAnalyzer@1
     condition: and(eq(variables.ScanPSScripts, true), ne(variables.DeploymentScriptsRoot, ''))
